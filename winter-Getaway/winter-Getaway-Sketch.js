@@ -147,7 +147,8 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, 332); //Create canvas with window width, which adds transferability
+  let winterGetawayCanvas = createCanvas(windowWidth, 332); //Create canvas with window width, which adds transferability
+  winterGetaway.parent("winterGetawayGameContainer");
 
   frameRate(60); //Set frame rate to 60 frames per second
 
