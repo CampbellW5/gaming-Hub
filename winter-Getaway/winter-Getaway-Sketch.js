@@ -125,12 +125,20 @@ var text2Y;
 
 var text2Width;
 
+var winterGetawayCanvas;
+
 var canvasWidth;
 
 var canvasHeight;
 
 var pixelScale;
 
+function centerCanvas() {
+  var canvasX = (windowWidth - width) / 2;
+  var canvasY = (windowHeight - height) / 2;
+  winterGetawayCanvas.position(canvasX, canvasY);
+  
+}
 //Preload images so that they are ready when the game begins
 function preload() {
   bgImg = loadImage("winter-Getaway/winter-Getaway-Images/moving-Road.jpeg");
@@ -158,8 +166,10 @@ function setup() {
   canvasWidth = windowWidth * 0.66;
   canvasHeight = windowWidth * 0.22;
 
-  createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
-
+  winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
+  
+  centerCanvas();
+  
   carImgX = 0;
   carImgY = pixelScale * -2;
 
@@ -721,4 +731,5 @@ function postDeathText() {
 
 function windowResized() {
   resizeCanvas(canvasWidth, canvasHeight);
+  centerCanvas();
 }
