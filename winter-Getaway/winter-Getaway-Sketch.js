@@ -613,6 +613,8 @@ function keyPressed() {
   } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * 172) {
     carImgY = carImgY + pixelScale * 83;
   }
+  
+  windowResized
 }
 
 //Snowflake class
@@ -715,4 +717,8 @@ function postDeathText() {
   textSize(24);
   textAlign(CENTER, TOP);
   text(text2Contents, text2X, text2Y, text2Width, text2Height);
+}
+
+function windowResized() {
+  resizeCanvas(canvasWidth, canvasHeight);
 }
