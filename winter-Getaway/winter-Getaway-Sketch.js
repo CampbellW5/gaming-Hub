@@ -3,11 +3,11 @@ var bgImg;
 var x1 = 0;
 var x2;
 
-var carImgX = 0;
-var carImgY = -2;
+var carImgX;
+var carImgY;
 
-var carImgWidth = 150;
-var carImgHeight = 82;
+var carImgWidth;
+var carImgHeight;
 
 var scrollSpeed = 4;
 
@@ -15,14 +15,14 @@ var uncomingCarImg;
 
 var uncomingCarY;
 
-let uncomingCarYOptions = [85, 255];
+let uncomingCarYOptions;
 
-let uncomingCarY2Options = [85, 255];
+let uncomingCarY2Options;
 
 var uncomingCarY2;
 
-var uncomingCarWidth = 168;
-var uncomingCarHeight = 82;
+var uncomingCarWidth;
+var uncomingCarHeight;
 
 var uncomingCarAppear;
 
@@ -30,14 +30,14 @@ var uncomingSemiImg;
 
 var uncomingSemiY;
 
-let uncomingSemiYOptions = [89, 259];
+let uncomingSemiYOptions;
 
-let uncomingSemiY2Options = [89, 259];
+let uncomingSemiY2Options;
 
 var uncomingSemiY2;
 
-var uncomingSemiWidth = 442;
-var uncomingSemiHeight = 70;
+var uncomingSemiWidth;
+var uncomingSemiHeight;
 
 var uncomingSemiAppear;
 
@@ -45,16 +45,16 @@ var oldSlowTruckImg;
 
 var oldSlowTruckY;
 
-let oldSlowTruckYOptions = [2.75, 172.5];
+let oldSlowTruckYOptions;
 
-let oldSlowTruckY2Options = [2.75, 172.5];
+let oldSlowTruckY2Options;
 
 var oldSlowTruckY2;
 
 var oldSlowTruckAppear;
 
-var oldSlowTruckWidth = 194;
-var oldSlowTruckHeight = 76;
+var oldSlowTruckWidth;
+var oldSlowTruckHeight;
 
 var uncomingSemiX2;
 
@@ -64,16 +64,16 @@ var slowCarImg;
 
 var slowCarY;
 
-let slowCarYOptions = [2.75, 172.5];
+let slowCarYOptions;
 
-let slowCarY2Options = [2.75, 172.5];
+let slowCarY2Options;
 
 var slowCarY2;
 
 var slowCarAppear;
 
-var slowCarWidth = 190;
-var slowCarHeight = 76;
+var slowCarWidth;
+var slowCarHeight;
 
 var timeRunning = 0;
 
@@ -109,7 +109,7 @@ var timeElapsed = 0;
 
 var textContents;
 
-var circleRadius = 30;
+var circleRadius;
 
 var circleX;
 
@@ -124,6 +124,12 @@ var text2X;
 var text2Y;
 
 var text2Width;
+
+var canvasWidth;
+
+var canvasHeight;
+
+var pixelScale;
 
 //Preload images so that they are ready when the game begins
 function preload() {
@@ -147,8 +153,44 @@ function preload() {
 }
 
 function setup() {
-  let winterGetawayCanvas = createCanvas(windowWidth, 332); //Create canvas with window width, which adds transferability
-  winterGetaway.parent("winterGetawayGameContainer");
+  pixelScale = windowWidth * 0.00066;
+
+  canvasWidth = windowWidth * 0.66;
+  canvasHeight = windowWidth * 0.22;
+
+  createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
+
+  carImgX = 0;
+  carImgY = pixelScale * -2;
+
+  carImgWidth = pixelScale * 150;
+  carImgHeight = pixelScale * 82;
+
+  uncomingCarYOptions = [pixelScale * 85, pixelScale * 255];
+  uncomingCarY2Options = [pixelScale * 85, pixelScale * 255];
+  
+  uncomingCarWidth = pixelScale * 168;
+  uncomingCarHeight = pixelScale * 82;
+  
+  uncomingSemiYOptions = [pixelScale * 89, pixelScale * 259];
+  uncomingSemiY2Options = [pixelScale * 89, pixelScale * 259];
+  
+  uncomingSemiWidth = pixelScale * 442;
+  uncomingSemiHeight = pixelScale * 70;
+  
+  oldSlowTruckYOptions = [pixelScale * 2.75, pixelScale * 172.5];
+  oldSlowTruckY2Options = [pixelScale * 2.75, pixelScale * 172.5];
+  
+  oldSlowTruckWidth = pixelScale * 194;
+  oldSlowTruckHeight = pixelScale * 76;
+  
+  slowCarYOptions = [pixelScale * 2.75, pixelScale * 172.5];
+  slowCarY2Options = [pixelScale * 2.75, pixelScale * 172.5];
+  
+  slowCarWidth = pixelScale * 190;
+  slowCarHeight = pixelScale * 76;
+  
+  circleRadius = pixelScale * 30;
 
   frameRate(60); //Set frame rate to 60 frames per second
 
@@ -157,55 +199,55 @@ function setup() {
   x2 = width;
 
   //Initialize all variables that include width
-  uncomingCarX = width + 4;
+  uncomingCarX = width + pixelScale * 4;
 
-  slowCarXMin = width + 250;
+  slowCarXMin = width + pixelScale * 250;
 
-  slowCarXMax = width + 400;
+  slowCarXMax = width + pixelScale * 400;
 
   uncomingCarXOptions = [
-    4 + width,
-    100 + width,
-    200 + width,
-    300 + width,
-    400 + width,
-    500 + width,
-    600 + width,
-    700 + width,
-    800 + width,
-    900 + width,
-    1000 + width,
-    1100 + width,
-    1200 + width,
-    1300 + width,
-    1400 + width,
-    1500 + width,
+    pixelScale * 4 + width,
+    pixelScale * 100 + width,
+    pixelScale * 200 + width,
+    pixelScale * 300 + width,
+    pixelScale * 400 + width,
+    pixelScale * 500 + width,
+    pixelScale * 600 + width,
+    pixelScale * 700 + width,
+    pixelScale * 800 + width,
+    pixelScale * 900 + width,
+    pixelScale * 1000 + width,
+    pixelScale * 1100 + width,
+    pixelScale * 1200 + width,
+    pixelScale * 1300 + width,
+    pixelScale * 1400 + width,
+    pixelScale * 1500 + width,
   ];
 
   uncomingSemiXOptions = [
-    4 + width,
-    100 + width,
-    200 + width,
-    300 + width,
-    400 + width,
-    500 + width,
-    600 + width,
-    700 + width,
-    800 + width,
-    900 + width,
-    1000 + width,
-    1100 + width,
-    1200 + width,
-    1300 + width,
-    1400 + width,
-    1500 + width,
+    pixelScale * 4 + width,
+    pixelScale * 100 + width,
+    pixelScale * 200 + width,
+    pixelScale * 300 + width,
+    pixelScale * 400 + width,
+    pixelScale * 500 + width,
+    pixelScale * 600 + width,
+    pixelScale * 700 + width,
+    pixelScale * 800 + width,
+    pixelScale * 900 + width,
+    pixelScale * 1000 + width,
+    pixelScale * 1100 + width,
+    pixelScale * 1200 + width,
+    pixelScale * 1300 + width,
+    pixelScale * 1400 + width,
+    pixelScale * 1500 + width,
   ];
 
-  oldSlowTruckXMin = width + 4;
+  oldSlowTruckXMin = width + pixelScale * 4;
 
-  oldSlowTruckXMax = width + 100;
+  oldSlowTruckXMax = width + pixelScale * 100;
 
-  uncomingSemiX = width + 4;
+  uncomingSemiX = width + pixelScale * 4;
 
   //Randomly generates y-positions based on given options
   uncomingCarY = floor(random(uncomingCarYOptions));
@@ -249,11 +291,11 @@ function draw() {
     round(timeElapsed / 60) +
     " seconds. \n Press the play button to start another round.";
 
-  image(bgImg, x1, 0, width, 162);
-  image(bgImg, x2, 0, width, 162);
+  image(bgImg, x1, 0, width, pixelScale * 162);
+  image(bgImg, x2, 0, width, pixelScale * 162);
 
-  image(bgImg, x1, 170, width, 162);
-  image(bgImg, x2, 170, width, 162);
+  image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
+  image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
 
   if (x1 < -width) {
     x1 = width;
@@ -269,91 +311,91 @@ function draw() {
    *Eliminates instances where vehicles appear on top of each other
    */
   if (
-    uncomingCarY === 85 &&
-    uncomingSemiY === 89 &&
+    uncomingCarY === pixelScale * 85 &&
+    uncomingSemiY === pixelScale * 89 &&
     uncomingCarX >= width &&
     uncomingSemiX <= width
   ) {
-    uncomingCarY = 255;
+    uncomingCarY = pixelScale * 255;
   } else if (
-    uncomingCarY === 255 &&
-    uncomingSemiY === 259 &&
+    uncomingCarY === pixelScale * 255 &&
+    uncomingSemiY === pixelScale * 259 &&
     uncomingCarX >= width &&
     uncomingSemiX <= width
   ) {
-    uncomingCarY = 85;
+    uncomingCarY = pixelScale * 85;
   } else if (
-    uncomingCarY === 255 &&
-    uncomingSemiY === 259 &&
+    uncomingCarY === pixelScale * 255 &&
+    uncomingSemiY === pixelScale * 259 &&
     uncomingCarX <= width &&
     uncomingSemiX >= width
   ) {
-    uncomingSemiY = 89;
+    uncomingSemiY = pixelScale * 89;
   } else if (
-    uncomingCarY === 85 &&
-    uncomingSemiY === 89 &&
+    uncomingCarY === pixelScale * 85 &&
+    uncomingSemiY === pixelScale * 89 &&
     uncomingCarX <= width &&
     uncomingSemiX >= width
   ) {
-    uncomingSemiY = 259;
+    uncomingSemiY = pixelScale * 259;
   } else if (
-    uncomingCarY === 85 &&
-    uncomingSemiY === 89 &&
+    uncomingCarY === pixelScale * 85 &&
+    uncomingSemiY === pixelScale * 89 &&
     uncomingSemiX >= width &&
     uncomingCarX >= width
   ) {
-    uncomingCarY = 255;
+    uncomingCarY = pixelScale * 255;
   } else if (
-    uncomingCarY === 255 &&
-    uncomingSemiY === 259 &&
+    uncomingCarY === pixelScale * 255 &&
+    uncomingSemiY === pixelScale * 259 &&
     uncomingSemiX >= width &&
     uncomingCarX >= width
   ) {
-    uncomingCarY = 85;
+    uncomingCarY = pixelScale * 85;
   }
 
   if (
-    slowCarY === 2.75 &&
-    oldSlowTruckY === 2.75 &&
+    slowCarY === pixelScale * 2.75 &&
+    oldSlowTruckY === pixelScale * 2.75 &&
     slowCarX >= width &&
     oldSlowTruckX <= width
   ) {
-    slowCarY = 172.5;
+    slowCarY = pixelScale * 172.5;
   } else if (
-    slowCarY === 172.5 &&
-    oldSlowTruckY === 172.5 &&
+    slowCarY === pixelScale * 172.5 &&
+    oldSlowTruckY === pixelScale * 172.5 &&
     slowCarX >= width &&
     oldSlowTruckX <= width
   ) {
-    slowCarY = 2.75;
+    slowCarY = pixelScale * 2.75;
   } else if (
-    slowCarY === 172.5 &&
-    oldSlowTruckY === 172.5 &&
+    slowCarY === pixelScale * 2.75 &&
+    oldSlowTruckY === pixelScale * 2.75 &&
     slowCarX <= width &&
     oldSlowTruckX >= width
   ) {
-    oldSlowTruckY = 2.75;
+    oldSlowTruckY = pixelScale * 172.5;
   } else if (
-    slowCarY === 172.5 &&
-    oldSlowTruckY === 172.5 &&
+    slowCarY === pixelScale * 172.5 &&
+    oldSlowTruckY === pixelScale * 172.5 &&
     slowCarX <= width &&
     oldSlowTruckX >= width
   ) {
-    oldSlowTruckY = 2.75;
+    oldSlowTruckY = pixelScale * 2.75;
   } else if (
-    slowCarY === 2.75 &&
-    oldSlowTruckY === 2.75 &&
+    slowCarY === pixelScale * 2.75 &&
+    oldSlowTruckY === pixelScale * 2.75 &&
     slowCarX >= width &&
     oldSlowTruckX >= width
   ) {
-    slowCarY = 172.5;
+    slowCarY = pixelScale * 172.5;
   } else if (
-    slowCarY === 172.5 &&
-    oldSlowTruckY === 172.5 &&
+    slowCarY === pixelScale * 172.5 &&
+    oldSlowTruckY === pixelScale * 172.5 &&
     slowCarX >= width &&
     oldSlowTruckX >= width
   ) {
-    slowCarY = 2.75;
+    slowCarY = pixelScale * 2.75;
   }
 
   //Start time running clocks
@@ -428,65 +470,65 @@ function draw() {
    *sequence
    */
   if (
-    uncomingCarY === 85 &&
-    carImgY === 81 &&
-    uncomingCarX <= 130 &&
-    uncomingCarX >= -150
+    uncomingCarY === pixelScale * 85 &&
+    carImgY === pixelScale * 81 &&
+    uncomingCarX <= pixelScale * 130 &&
+    uncomingCarX >= pixelScale * -150
   ) {
     postDeathSequence();
   } else if (
-    uncomingCarY === 255 &&
-    carImgY === 255 &&
-    uncomingCarX <= 130 &&
-    uncomingCarX >= -150
+    uncomingCarY === pixelScale * 255 &&
+    carImgY === pixelScale * 255 &&
+    uncomingCarX <= pixelScale * 130 &&
+    uncomingCarX >= pixelScale * -150
   ) {
     postDeathSequence();
   }
 
   if (
-    uncomingSemiY === 89 &&
-    carImgY === 81 &&
-    uncomingSemiX <= 134 &&
-    uncomingSemiX >= -425
+    uncomingSemiY === pixelScale * 89 &&
+    carImgY === pixelScale * 81 &&
+    uncomingSemiX <= pixelScale * 134 &&
+    uncomingSemiX >= pixelScale * -425
   ) {
     postDeathSequence();
   } else if (
-    uncomingSemiY === 259 &&
-    carImgY === 255 &&
-    uncomingSemiX <= 134 &&
-    uncomingSemiX >= -425
+    uncomingSemiY === pixelScale * 259 &&
+    carImgY === pixelScale * 255 &&
+    uncomingSemiX <= pixelScale * 134 &&
+    uncomingSemiX >= pixelScale * -425
   ) {
     postDeathSequence();
   }
 
   if (
-    oldSlowTruckY === 2.75 &&
-    carImgY === -2 &&
-    oldSlowTruckX <= 140 &&
-    oldSlowTruckX >= -185
+    oldSlowTruckY === pixelScale * 2.75 &&
+    carImgY === pixelScale * -2 &&
+    oldSlowTruckX <= pixelScale * 140 &&
+    oldSlowTruckX >= pixelScale * -185
   ) {
     postDeathSequence();
   } else if (
-    oldSlowTruckY === 172.5 &&
-    carImgY === 172 &&
-    oldSlowTruckX <= 140 &&
-    oldSlowTruckX >= -185
+    oldSlowTruckY === pixelScale * 172.5 &&
+    carImgY === pixelScale * 172 &&
+    oldSlowTruckX <= pixelScale * 140 &&
+    oldSlowTruckX >= pixelScale * -185
   ) {
     postDeathSequence();
   }
 
   if (
-    slowCarY === 2.75 &&
-    carImgY === -2 &&
-    slowCarX <= 140 &&
-    slowCarX >= -181
+    slowCarY === pixelScale * 2.75 &&
+    carImgY === pixelScale * -2 &&
+    slowCarX <= pixelScale * 140 &&
+    slowCarX >= pixelScale * -181
   ) {
     postDeathSequence();
   } else if (
-    slowCarY === 172.5 &&
-    carImgY === 172 &&
-    slowCarX <= 140 &&
-    slowCarX >= -181
+    slowCarY === pixelScale * 172.5 &&
+    carImgY === pixelScale * 172 &&
+    slowCarX <= pixelScale * 140 &&
+    slowCarX >= pixelScale * -181
   ) {
     postDeathSequence();
   }
@@ -495,28 +537,28 @@ function draw() {
    *Y and x coordinates are random each time for each vehicle
    */
   for (let i = 0; i < 40; i++) {
-    if (oldSlowTruckX <= -300) {
+    if (oldSlowTruckX <= pixelScale * -300) {
       oldSlowTruckY = random(oldSlowTruckY2Options);
       oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
     }
   }
 
   for (let i = 0; i < 40; i++) {
-    if (uncomingCarX <= -290) {
+    if (uncomingCarX <= pixelScale * -290) {
       uncomingCarY = floor(random(uncomingCarY2Options));
       uncomingCarX = uncomingCarX2;
     }
   }
 
   for (let i = 0; i < 10; i++) {
-    if (uncomingSemiX <= -550) {
+    if (uncomingSemiX <= pixelScale * -550) {
       uncomingSemiY = floor(random(uncomingSemiY2Options));
       uncomingSemiX = uncomingSemiX2;
     }
   }
 
   for (let i = 0; i < 10; i++) {
-    if (slowCarX <= -296) {
+    if (slowCarX <= pixelScale * -296) {
       slowCarY = random(slowCarY2Options);
       slowCarX = floor(random(slowCarXMin, slowCarXMax));
     }
@@ -524,7 +566,7 @@ function draw() {
 
   //Rectangle to make divider between highways
   fill("grey");
-  rect(0, 162, width, 8);
+  rect(0, pixelScale * 162, width, pixelScale * 8);
 
   let t = frameCount / 60; //Update time
 
@@ -544,32 +586,32 @@ function draw() {
 
 //Use the keyPressed function to initiate the keys
 function keyPressed() {
-  if (keyCode === UP_ARROW && carImgY === 81) {
-    carImgY = carImgY - 83;
-  } else if (keyCode === UP_ARROW && carImgY === 172) {
-    carImgY = carImgY - 91;
-  } else if (keyCode === UP_ARROW && carImgY === 255) {
-    carImgY = carImgY - 83;
-  } else if (keyCode === DOWN_ARROW && carImgY === -2) {
-    carImgY = carImgY + 83;
-  } else if (keyCode === DOWN_ARROW && carImgY === 81) {
-    carImgY = carImgY + 91;
-  } else if (keyCode === DOWN_ARROW && carImgY === 172) {
-    carImgY = carImgY + 83;
+  if (keyCode === UP_ARROW && carImgY === pixelScale * 81) {
+    carImgY = carImgY - pixelScale * 83;
+  } else if (keyCode === UP_ARROW && carImgY === pixelScale * 172) {
+    carImgY = carImgY - pixelScale * 91;
+  } else if (keyCode === UP_ARROW && carImgY === pixelScale * 255) {
+    carImgY = carImgY - pixelScale * 83;
+  } else if (keyCode === DOWN_ARROW && carImgY === pixelScale * -2) {
+    carImgY = carImgY + pixelScale * 83;
+  } else if (keyCode === DOWN_ARROW && carImgY === pixelScale * 81) {
+    carImgY = carImgY + pixelScale * 91;
+  } else if (keyCode === DOWN_ARROW && carImgY === pixelScale * 172) {
+    carImgY = carImgY + pixelScale * 83;
   }
 
-  if (keyCode === RIGHT_ARROW && carImgY === 81) {
-    carImgY = carImgY - 83;
-  } else if (keyCode === RIGHT_ARROW && carImgY === 172) {
-    carImgY = carImgY - 91;
-  } else if (keyCode === RIGHT_ARROW && carImgY === 255) {
-    carImgY = carImgY - 83;
-  } else if (keyCode === LEFT_ARROW && carImgY === -2) {
-    carImgY = carImgY + 83;
-  } else if (keyCode === LEFT_ARROW && carImgY === 81) {
-    carImgY = carImgY + 91;
-  } else if (keyCode === LEFT_ARROW && carImgY === 172) {
-    carImgY = carImgY + 83;
+  if (keyCode === RIGHT_ARROW && carImgY === pixelScale * 81) {
+    carImgY = carImgY - pixelScale * 83;
+  } else if (keyCode === RIGHT_ARROW && carImgY === pixelScale * 172) {
+    carImgY = carImgY - pixelScale * 91;
+  } else if (keyCode === RIGHT_ARROW && carImgY === pixelScale * 255) {
+    carImgY = carImgY - pixelScale * 83;
+  } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * -2) {
+    carImgY = carImgY + pixelScale * 83;
+  } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * 81) {
+    carImgY = carImgY + pixelScale * 91;
+  } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * 172) {
+    carImgY = carImgY + pixelScale * 83;
   }
 }
 
@@ -609,7 +651,7 @@ function snowflake() {
 
 //Function for the time elapsed text in the top right corner
 function timerText() {
-  var timerTextWidth = 130;
+  var timerTextWidth = pixelScale * 130;
 
   var timerTextX = width - timerTextWidth;
 
@@ -617,7 +659,13 @@ function timerText() {
   textFont("Helvetica");
   textSize(12);
   textAlign(RIGHT, TOP);
-  text(textContents, timerTextX, 8, timerTextWidth, 30);
+  text(
+    textContents,
+    timerTextX,
+    pixelScale * 8,
+    timerTextWidth,
+    pixelScale * 30
+  );
 }
 
 /*Function for the explosion circle/ellipse
@@ -657,10 +705,10 @@ function postDeathSequence() {
 
 //Function for post death text
 function postDeathText() {
-  text2X = width / 300;
-  text2Y = height / 33;
+  text2X = width / (pixelScale * 300);
+  text2Y = height / (pixelScale * 33);
   text2Width = width;
-  text2Height = height / 3;
+  text2Height = height / (pixelScale * 3);
 
   fill("white");
   textFont("Helvetica");
