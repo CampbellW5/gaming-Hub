@@ -153,6 +153,12 @@ var slowCarYPosition1;
 var snowflakeMinRadius;
 var snowflakeMaxRadius;
 
+var keyPressedIntializationNumber = 0;
+
+var button;
+
+var startGameNumber = 0;
+
 //Preload images so that they are ready when the game begins
 function preload() {
   bgImg = loadImage("winter-Getaway/winter-Getaway-Images/moving-Road.jpeg");
@@ -176,11 +182,11 @@ function preload() {
 
 function setup() {
   canvasWidth = windowWidth * 0.98;
-  canvasHeight = windowWidth * 0.326;
+  canvasHeight = windowHeight * 0.3998;
 
   createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
 
-  pixelScale = windowWidth * 0.00098;
+  pixelScale = windowHeight * 0.0012;
 
   scrollSpeed = pixelScale * 4;
 
@@ -320,9 +326,21 @@ function setup() {
   slowCarX = floor(random(slowCarXMin, slowCarXMax));
 
   noStroke();
+  
+  image(bgImg, x1, 0, width, pixelScale * 162);
+  image(bgImg, x2, 0, width, pixelScale * 162);
+
+  image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
+  image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
+  
+  image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+  
+  button = createButton("Start Game");
+  button.mouseClicked(startGame);
 }
 
 function draw() {
+  if (startGameNumber === 1) {
   /*if (uncomingSemiY === uncomingSemiYPosition1 && uncomingCarY === uncomingCarYPosition1) {
      print(uncomingCarY);
      print(uncomingSemiY);
@@ -485,7 +503,7 @@ function draw() {
       uncomingCarHeight
     );
 
-    uncomingCarX = uncomingCarX - (pixelScale * 4);
+    uncomingCarX = uncomingCarX - pixelScale * 4;
   }
 
   if (timeRunning2 === uncomingSemiAppear) {
@@ -499,7 +517,7 @@ function draw() {
       uncomingSemiHeight
     );
 
-    uncomingSemiX = uncomingSemiX - (pixelScale * 4);
+    uncomingSemiX = uncomingSemiX - pixelScale * 4;
   }
 
   if (timeRunning3 === oldSlowTruckAppear) {
@@ -513,7 +531,7 @@ function draw() {
       oldSlowTruckHeight
     );
 
-    oldSlowTruckX = oldSlowTruckX - (pixelScale * 1);
+    oldSlowTruckX = oldSlowTruckX - pixelScale * 1;
   }
 
   if (timeRunning4 === slowCarAppear) {
@@ -521,117 +539,111 @@ function draw() {
 
     image(slowCarImg, slowCarX, slowCarY, slowCarWidth, slowCarHeight);
 
-    slowCarX = slowCarX - (pixelScale * 1);
+    slowCarX = slowCarX - pixelScale * 1;
   }
 
-  for (let i = 0; i < 40; i++) { 
-    
+  for (let i = 0; i < 40; i++) {
     if (speedUpTimer / 60 === 22) {
-      
-      scrollSpeed = (pixelScale * 4)*1.1; 
-      
+      scrollSpeed = pixelScale * 4 * 1.1;
+
       if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX - ((pixelScale * 4)* 1.1);
+        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.1;
       }
 
       if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX - ((pixelScale * 4) * 1.1);
+        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.1;
       }
 
       if (slowCarX >= width) {
-        slowCarX = slowCarX - ((pixelScale * 1) * 1.1);
+        slowCarX = slowCarX - pixelScale * 1 * 1.1;
       }
 
       if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX - ((pixelScale * 1) * 1.1);
+        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.1;
       }
     }
-    
+
     if (speedUpTimer / 60 === 24) {
-      
-      scrollSpeed = (pixelScale * 4)*1.2; 
-      
+      scrollSpeed = pixelScale * 4 * 1.2;
+
       if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX * 1.2;
+        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.2;
       }
 
       if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX * 1.2;
+        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.2;
       }
 
       if (slowCarX >= width) {
-        slowCarX = slowCarX * 1.2;
+        slowCarX = slowCarX - pixelScale * 1 * 1.2;
       }
 
       if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX * 1.2;
+        oldSlowTruckX = -(pixelScale * 1 * 1.2);
       }
     }
-    
+
     if (speedUpTimer / 60 === 26) {
-      
-      scrollSpeed = (pixelScale * 4)*1.3; 
-      
+      scrollSpeed = pixelScale * 4 * 1.3;
+
       if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX * 1.3;
+        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.3;
       }
 
       if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX * 1.3;
+        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.3;
       }
 
       if (slowCarX >= width) {
-        slowCarX = slowCarX * 1.3;
+        slowCarX = slowCarX - pixelScale * 1 * 1.3;
       }
 
       if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX * 1.3;
+        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.3;
       }
     }
-    
+
     if (speedUpTimer / 60 === 28) {
-      
-      scrollSpeed = (pixelScale * 4)*1.4; 
-      
+      scrollSpeed = pixelScale * 4 * 1.4;
+
       if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX * 1.4;
+        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.4;
       }
 
       if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX * 1.4;
+        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.4;
       }
 
       if (slowCarX >= width) {
-        slowCarX = slowCarX * 1.4;
+        slowCarX = slowCarX - pixelScale * 1 * 1.4;
       }
 
       if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX * 1.4;
+        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.4;
       }
     }
-    
+
     if (speedUpTimer / 60 === 30) {
-      
-      scrollSpeed = (pixelScale * 4)*1.5; 
-      
+      scrollSpeed = pixelScale * 4 * 1.5;
+
       if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX * 1.5;
+        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.5;
       }
 
       if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX * 1.5;
+        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.5;
       }
 
       if (slowCarX >= width) {
-        slowCarX = slowCarX * 1.5;
+        slowCarX = slowCarX - pixelScale * 1 * 1.5;
       }
 
       if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX * 1.5;
+        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.5;
       }
     }
-    
-    if ((speedUpTimer / 60) === 60) {
+
+    if (speedUpTimer / 60 === 60) {
       speedUpTimer = 0;
     }
   }
@@ -753,35 +765,38 @@ function draw() {
 
   timerText(); //Execute timerText function
 }
+}
 
 //Use the keyPressed function to initiate the keys
 function keyPressed() {
-  if (keyCode === UP_ARROW && carImgY === carImgYPosition2) {
-    carImgY = carImgYPosition1;
-  } else if (keyCode === UP_ARROW && carImgY === carImgYPosition3) {
-    carImgY = carImgYPosition2;
-  } else if (keyCode === UP_ARROW && carImgY === carImgYPosition4) {
-    carImgY = carImgYPosition3;
-  } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition1) {
-    carImgY = carImgYPosition2;
-  } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition2) {
-    carImgY = carImgYPosition3;
-  } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition3) {
-    carImgY = carImgYPosition4;
-  }
+  if (keyPressedIntializationNumber === 0) {
+    if (keyCode === UP_ARROW && carImgY === carImgYPosition2) {
+      carImgY = carImgYPosition1;
+    } else if (keyCode === UP_ARROW && carImgY === carImgYPosition3) {
+      carImgY = carImgYPosition2;
+    } else if (keyCode === UP_ARROW && carImgY === carImgYPosition4) {
+      carImgY = carImgYPosition3;
+    } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition1) {
+      carImgY = carImgYPosition2;
+    } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition2) {
+      carImgY = carImgYPosition3;
+    } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition3) {
+      carImgY = carImgYPosition4;
+    }
 
-  if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition2) {
-    carImgY = carImgYPosition1;
-  } else if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition3) {
-    carImgY = carImgYPosition2;
-  } else if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition4) {
-    carImgY = carImgYPosition3;
-  } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition1) {
-    carImgY = carImgYPosition2;
-  } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition2) {
-    carImgY = carImgYPosition3;
-  } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition3) {
-    carImgY = carImgYPosition4;
+    if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition2) {
+      carImgY = carImgYPosition1;
+    } else if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition3) {
+      carImgY = carImgYPosition2;
+    } else if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition4) {
+      carImgY = carImgYPosition3;
+    } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition1) {
+      carImgY = carImgYPosition2;
+    } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition2) {
+      carImgY = carImgYPosition3;
+    } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition3) {
+      carImgY = carImgYPosition4;
+    }
   }
 }
 
@@ -855,6 +870,9 @@ function explosion() {
 
 //Function for the post death sequence
 function postDeathSequence() {
+  
+  keyPressedIntializationNumber = 1;
+  
   postDeathSequenceCounter++;
 
   x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
@@ -892,5 +910,9 @@ function postDeathText() {
 }
 
 function windowResized() {
-  resizeCanvas(canvasWidth, canvasHeight);
+  resizeCanvas(windowWidth * 0.98, windowHeight * 0.49);
+}
+
+function startGame() {
+  startGameNumber = 1;
 }
