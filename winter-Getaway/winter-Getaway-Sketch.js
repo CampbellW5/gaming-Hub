@@ -9,7 +9,7 @@ var carImgY;
 var carImgWidth;
 var carImgHeight;
 
-var scrollSpeed = 4;
+var scrollSpeed;
 
 var uncomingCarImg;
 
@@ -107,6 +107,8 @@ var uncomingSemiX;
 
 var timeElapsed = 0;
 
+var speedUpTimer = 0;
+
 var textContents;
 
 var circleRadius;
@@ -125,20 +127,32 @@ var text2Y;
 
 var text2Width;
 
-var winterGetawayCanvas;
-
 var canvasWidth;
 
 var canvasHeight;
 
 var pixelScale;
 
-function centerCanvas() {
-  var canvasX = (windowWidth - width) / 2;
-  var canvasY = (windowHeight - height) / 2;
-  winterGetawayCanvas.position(canvasX, canvasY);
-  
-}
+var carImgYPosition1;
+var carImgYPosition2;
+var carImgYPosition3;
+var carImgYPosition4;
+
+var uncomingCarYPosition1;
+var uncomingCarYPosition2;
+
+var uncomingSemiYPosition1;
+var uncomingSemiYPosition2;
+
+var oldSlowTruckYPosition1;
+var oldSlowTruckYPosition2;
+
+var slowCarYPosition1;
+var slowCarYPosition1;
+
+var snowflakeMinRadius;
+var snowflakeMaxRadius;
+
 //Preload images so that they are ready when the game begins
 function preload() {
   bgImg = loadImage("winter-Getaway/winter-Getaway-Images/moving-Road.jpeg");
@@ -161,46 +175,66 @@ function preload() {
 }
 
 function setup() {
-  pixelScale = windowWidth * 0.00066;
+  canvasWidth = windowWidth * 0.98;
+  canvasHeight = windowWidth * 0.326;
 
-  canvasWidth = windowWidth * 0.66;
-  canvasHeight = windowWidth * 0.22;
+  createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
 
-  winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
-  
-  centerCanvas();
-  
+  pixelScale = windowWidth * 0.00098;
+
+  scrollSpeed = pixelScale * 4;
+
+  carImgYPosition1 = pixelScale * -2;
+  carImgYPosition2 = pixelScale * 81;
+  carImgYPosition3 = pixelScale * 172;
+  carImgYPosition4 = pixelScale * 255;
+
+  uncomingCarYPosition1 = pixelScale * 85;
+  uncomingCarYPosition2 = pixelScale * 255;
+
+  uncomingSemiYPosition1 = pixelScale * 89;
+  uncomingSemiYPosition2 = pixelScale * 259;
+
+  oldSlowTruckYPosition1 = pixelScale * 2.75;
+  oldSlowTruckYPosition2 = pixelScale * 172.5;
+
+  slowCarYPosition1 = pixelScale * 2.75;
+  slowCarYPosition2 = pixelScale * 172.5;
+
   carImgX = 0;
   carImgY = pixelScale * -2;
 
   carImgWidth = pixelScale * 150;
   carImgHeight = pixelScale * 82;
 
-  uncomingCarYOptions = [pixelScale * 85, pixelScale * 255];
-  uncomingCarY2Options = [pixelScale * 85, pixelScale * 255];
-  
+  uncomingCarYOptions = [uncomingCarYPosition1, uncomingCarYPosition2];
+  uncomingCarY2Options = [uncomingCarYPosition1, uncomingCarYPosition2];
+
   uncomingCarWidth = pixelScale * 168;
   uncomingCarHeight = pixelScale * 82;
-  
-  uncomingSemiYOptions = [pixelScale * 89, pixelScale * 259];
-  uncomingSemiY2Options = [pixelScale * 89, pixelScale * 259];
-  
+
+  uncomingSemiYOptions = [uncomingSemiYPosition1, uncomingSemiYPosition2];
+  uncomingSemiY2Options = [uncomingSemiYPosition1, uncomingSemiYPosition2];
+
   uncomingSemiWidth = pixelScale * 442;
   uncomingSemiHeight = pixelScale * 70;
-  
-  oldSlowTruckYOptions = [pixelScale * 2.75, pixelScale * 172.5];
-  oldSlowTruckY2Options = [pixelScale * 2.75, pixelScale * 172.5];
-  
+
+  oldSlowTruckYOptions = [oldSlowTruckYPosition1, oldSlowTruckYPosition2];
+  oldSlowTruckY2Options = [oldSlowTruckYPosition1, oldSlowTruckYPosition2];
+
   oldSlowTruckWidth = pixelScale * 194;
   oldSlowTruckHeight = pixelScale * 76;
-  
-  slowCarYOptions = [pixelScale * 2.75, pixelScale * 172.5];
-  slowCarY2Options = [pixelScale * 2.75, pixelScale * 172.5];
-  
+
+  slowCarYOptions = [slowCarYPosition1, slowCarYPosition2];
+  slowCarY2Options = [slowCarYPosition1, slowCarYPosition2];
+
   slowCarWidth = pixelScale * 190;
   slowCarHeight = pixelScale * 76;
-  
+
   circleRadius = pixelScale * 30;
+
+  snowflakeMinRadius = pixelScale * 2;
+  snowflakeMaxRadius = pixelScale * 5;
 
   frameRate(60); //Set frame rate to 60 frames per second
 
@@ -260,9 +294,9 @@ function setup() {
   uncomingSemiX = width + pixelScale * 4;
 
   //Randomly generates y-positions based on given options
-  uncomingCarY = floor(random(uncomingCarYOptions));
+  uncomingCarY = random(uncomingCarYOptions);
 
-  uncomingSemiY = floor(random(uncomingSemiYOptions));
+  uncomingSemiY = random(uncomingSemiYOptions);
 
   oldSlowTruckY = random(oldSlowTruckYOptions);
 
@@ -289,9 +323,23 @@ function setup() {
 }
 
 function draw() {
+  /*if (uncomingSemiY === uncomingSemiYPosition1 && uncomingCarY === uncomingCarYPosition1) {
+     print(uncomingCarY);
+     print(uncomingSemiY);
+  }
+  
+  if (uncomingSemiY === uncomingSemiYPosition2 && uncomingCarY === uncomingCarYPosition2) {
+     print(uncomingCarY);
+     print(uncomingSemiY);
+  }
+  */
+
+  //print(carImgY);
   fill("grey");
 
   timeElapsed++; //Start time elapsed timer
+
+  speedUpTimer++;
 
   textContents = "Time Elapsed: " + round(timeElapsed / 60) + " s";
   //Divide by 60 and round to turn time elapsed into seconds
@@ -321,91 +369,91 @@ function draw() {
    *Eliminates instances where vehicles appear on top of each other
    */
   if (
-    uncomingCarY === pixelScale * 85 &&
-    uncomingSemiY === pixelScale * 89 &&
+    uncomingCarY === uncomingCarYPosition1 &&
+    uncomingSemiY === uncomingSemiYPosition1 &&
     uncomingCarX >= width &&
     uncomingSemiX <= width
   ) {
-    uncomingCarY = pixelScale * 255;
+    uncomingCarY = uncomingCarYPosition2;
   } else if (
-    uncomingCarY === pixelScale * 255 &&
-    uncomingSemiY === pixelScale * 259 &&
+    uncomingCarY === uncomingCarYPosition2 &&
+    uncomingSemiY === uncomingSemiYPosition2 &&
     uncomingCarX >= width &&
     uncomingSemiX <= width
   ) {
-    uncomingCarY = pixelScale * 85;
+    uncomingCarY = uncomingCarYPosition1;
   } else if (
-    uncomingCarY === pixelScale * 255 &&
-    uncomingSemiY === pixelScale * 259 &&
+    uncomingCarY === uncomingCarYPosition2 &&
+    uncomingSemiY === uncomingSemiYPosition2 &&
     uncomingCarX <= width &&
     uncomingSemiX >= width
   ) {
-    uncomingSemiY = pixelScale * 89;
+    uncomingSemiY = uncomingSemiYPosition1;
   } else if (
-    uncomingCarY === pixelScale * 85 &&
-    uncomingSemiY === pixelScale * 89 &&
+    uncomingCarY === uncomingCarYPosition1 &&
+    uncomingSemiY === uncomingSemiYPosition1 &&
     uncomingCarX <= width &&
     uncomingSemiX >= width
   ) {
-    uncomingSemiY = pixelScale * 259;
+    uncomingSemiY = uncomingSemiYPosition2;
   } else if (
-    uncomingCarY === pixelScale * 85 &&
-    uncomingSemiY === pixelScale * 89 &&
+    uncomingCarY === uncomingCarYPosition1 &&
+    uncomingSemiY === uncomingSemiYPosition1 &&
     uncomingSemiX >= width &&
     uncomingCarX >= width
   ) {
-    uncomingCarY = pixelScale * 255;
+    uncomingCarY = uncomingCarYPosition2;
   } else if (
-    uncomingCarY === pixelScale * 255 &&
-    uncomingSemiY === pixelScale * 259 &&
+    uncomingCarY === uncomingCarYPosition2 &&
+    uncomingSemiY === uncomingSemiYPosition2 &&
     uncomingSemiX >= width &&
     uncomingCarX >= width
   ) {
-    uncomingCarY = pixelScale * 85;
+    uncomingCarY = uncomingCarYPosition1;
   }
 
   if (
-    slowCarY === pixelScale * 2.75 &&
-    oldSlowTruckY === pixelScale * 2.75 &&
+    slowCarY === slowCarYPosition1 &&
+    oldSlowTruckY === oldSlowTruckYPosition1 &&
     slowCarX >= width &&
     oldSlowTruckX <= width
   ) {
-    slowCarY = pixelScale * 172.5;
+    slowCarY = slowCarYPosition2;
   } else if (
-    slowCarY === pixelScale * 172.5 &&
-    oldSlowTruckY === pixelScale * 172.5 &&
+    slowCarY === slowCarYPosition2 &&
+    oldSlowTruckY === oldSlowTruckYPosition2 &&
     slowCarX >= width &&
     oldSlowTruckX <= width
   ) {
-    slowCarY = pixelScale * 2.75;
+    slowCarY = slowCarYPosition1;
   } else if (
-    slowCarY === pixelScale * 2.75 &&
-    oldSlowTruckY === pixelScale * 2.75 &&
+    slowCarY === slowCarYPosition1 &&
+    oldSlowTruckY === slowCarYPosition1 &&
     slowCarX <= width &&
     oldSlowTruckX >= width
   ) {
-    oldSlowTruckY = pixelScale * 172.5;
+    oldSlowTruckY = oldSlowTruckYPosition2;
   } else if (
-    slowCarY === pixelScale * 172.5 &&
-    oldSlowTruckY === pixelScale * 172.5 &&
+    slowCarY === slowCarYPosition2 &&
+    oldSlowTruckY === oldSlowTruckYPosition2 &&
     slowCarX <= width &&
     oldSlowTruckX >= width
   ) {
-    oldSlowTruckY = pixelScale * 2.75;
+    oldSlowTruckY = oldSlowTruckYPosition1;
   } else if (
-    slowCarY === pixelScale * 2.75 &&
-    oldSlowTruckY === pixelScale * 2.75 &&
+    slowCarY === slowCarYPosition1 &&
+    oldSlowTruckY === oldSlowTruckYPosition1 &&
     slowCarX >= width &&
     oldSlowTruckX >= width
   ) {
-    slowCarY = pixelScale * 172.5;
+    slowCarY = slowCarYPosition2;
   } else if (
-    slowCarY === pixelScale * 172.5 &&
-    oldSlowTruckY === pixelScale * 172.5 &&
+    slowCarY === slowCarYPosition2 &&
+    oldSlowTruckY === oldSlowTruckYPosition2 &&
     slowCarX >= width &&
     oldSlowTruckX >= width
   ) {
-    slowCarY = pixelScale * 2.75;
+    slowCarY = slowCarYPosition1;
   }
 
   //Start time running clocks
@@ -427,7 +475,7 @@ function draw() {
 
   //Use if and else if statements so that vehicles appear at random times
   if (timeRunning === uncomingCarAppear) {
-    timeRunning--;
+    timeRunning = timeRunning - 1;
 
     image(
       uncomingCarImg,
@@ -437,11 +485,11 @@ function draw() {
       uncomingCarHeight
     );
 
-    uncomingCarX = uncomingCarX - 4;
+    uncomingCarX = uncomingCarX - (pixelScale * 4);
   }
 
   if (timeRunning2 === uncomingSemiAppear) {
-    timeRunning2--;
+    timeRunning2 = timeRunning2 - 1;
 
     image(
       uncomingSemiImg,
@@ -451,11 +499,11 @@ function draw() {
       uncomingSemiHeight
     );
 
-    uncomingSemiX = uncomingSemiX - 4;
+    uncomingSemiX = uncomingSemiX - (pixelScale * 4);
   }
 
   if (timeRunning3 === oldSlowTruckAppear) {
-    timeRunning3--;
+    timeRunning3 = timeRunning3 - 1;
 
     image(
       oldSlowTruckImg,
@@ -465,15 +513,127 @@ function draw() {
       oldSlowTruckHeight
     );
 
-    oldSlowTruckX = oldSlowTruckX - 1;
+    oldSlowTruckX = oldSlowTruckX - (pixelScale * 1);
   }
 
   if (timeRunning4 === slowCarAppear) {
-    timeRunning4--;
+    timeRunning4 = timeRunning4 - 1;
 
     image(slowCarImg, slowCarX, slowCarY, slowCarWidth, slowCarHeight);
 
-    slowCarX = slowCarX - 1;
+    slowCarX = slowCarX - (pixelScale * 1);
+  }
+
+  for (let i = 0; i < 40; i++) { 
+    
+    if (speedUpTimer / 60 === 22) {
+      
+      scrollSpeed = (pixelScale * 4)*1.1; 
+      
+      if (uncomingCarX >= width) {
+        uncomingCarX = uncomingCarX - ((pixelScale * 4)* 1.1);
+      }
+
+      if (uncomingSemiX >= width) {
+        uncomingSemiX = uncomingSemiX - ((pixelScale * 4) * 1.1);
+      }
+
+      if (slowCarX >= width) {
+        slowCarX = slowCarX - ((pixelScale * 1) * 1.1);
+      }
+
+      if (oldSlowTruckX >= width) {
+        oldSlowTruckX = oldSlowTruckX - ((pixelScale * 1) * 1.1);
+      }
+    }
+    
+    if (speedUpTimer / 60 === 24) {
+      
+      scrollSpeed = (pixelScale * 4)*1.2; 
+      
+      if (uncomingCarX >= width) {
+        uncomingCarX = uncomingCarX * 1.2;
+      }
+
+      if (uncomingSemiX >= width) {
+        uncomingSemiX = uncomingSemiX * 1.2;
+      }
+
+      if (slowCarX >= width) {
+        slowCarX = slowCarX * 1.2;
+      }
+
+      if (oldSlowTruckX >= width) {
+        oldSlowTruckX = oldSlowTruckX * 1.2;
+      }
+    }
+    
+    if (speedUpTimer / 60 === 26) {
+      
+      scrollSpeed = (pixelScale * 4)*1.3; 
+      
+      if (uncomingCarX >= width) {
+        uncomingCarX = uncomingCarX * 1.3;
+      }
+
+      if (uncomingSemiX >= width) {
+        uncomingSemiX = uncomingSemiX * 1.3;
+      }
+
+      if (slowCarX >= width) {
+        slowCarX = slowCarX * 1.3;
+      }
+
+      if (oldSlowTruckX >= width) {
+        oldSlowTruckX = oldSlowTruckX * 1.3;
+      }
+    }
+    
+    if (speedUpTimer / 60 === 28) {
+      
+      scrollSpeed = (pixelScale * 4)*1.4; 
+      
+      if (uncomingCarX >= width) {
+        uncomingCarX = uncomingCarX * 1.4;
+      }
+
+      if (uncomingSemiX >= width) {
+        uncomingSemiX = uncomingSemiX * 1.4;
+      }
+
+      if (slowCarX >= width) {
+        slowCarX = slowCarX * 1.4;
+      }
+
+      if (oldSlowTruckX >= width) {
+        oldSlowTruckX = oldSlowTruckX * 1.4;
+      }
+    }
+    
+    if (speedUpTimer / 60 === 30) {
+      
+      scrollSpeed = (pixelScale * 4)*1.5; 
+      
+      if (uncomingCarX >= width) {
+        uncomingCarX = uncomingCarX * 1.5;
+      }
+
+      if (uncomingSemiX >= width) {
+        uncomingSemiX = uncomingSemiX * 1.5;
+      }
+
+      if (slowCarX >= width) {
+        slowCarX = slowCarX * 1.5;
+      }
+
+      if (oldSlowTruckX >= width) {
+        oldSlowTruckX = oldSlowTruckX * 1.5;
+      }
+    }
+    
+    if ((speedUpTimer / 60) === 60) {
+      speedUpTimer = 0;
+    }
   }
 
   /*If the controlled green luxury car hits another vehicle, game over, commence post death
@@ -555,14 +715,14 @@ function draw() {
 
   for (let i = 0; i < 40; i++) {
     if (uncomingCarX <= pixelScale * -290) {
-      uncomingCarY = floor(random(uncomingCarY2Options));
+      uncomingCarY = random(uncomingCarY2Options);
       uncomingCarX = uncomingCarX2;
     }
   }
 
   for (let i = 0; i < 10; i++) {
     if (uncomingSemiX <= pixelScale * -550) {
-      uncomingSemiY = floor(random(uncomingSemiY2Options));
+      uncomingSemiY = random(uncomingSemiY2Options);
       uncomingSemiX = uncomingSemiX2;
     }
   }
@@ -596,35 +756,33 @@ function draw() {
 
 //Use the keyPressed function to initiate the keys
 function keyPressed() {
-  if (keyCode === UP_ARROW && carImgY === pixelScale * 81) {
-    carImgY = carImgY - pixelScale * 83;
-  } else if (keyCode === UP_ARROW && carImgY === pixelScale * 172) {
-    carImgY = carImgY - pixelScale * 91;
-  } else if (keyCode === UP_ARROW && carImgY === pixelScale * 255) {
-    carImgY = carImgY - pixelScale * 83;
-  } else if (keyCode === DOWN_ARROW && carImgY === pixelScale * -2) {
-    carImgY = carImgY + pixelScale * 83;
-  } else if (keyCode === DOWN_ARROW && carImgY === pixelScale * 81) {
-    carImgY = carImgY + pixelScale * 91;
-  } else if (keyCode === DOWN_ARROW && carImgY === pixelScale * 172) {
-    carImgY = carImgY + pixelScale * 83;
+  if (keyCode === UP_ARROW && carImgY === carImgYPosition2) {
+    carImgY = carImgYPosition1;
+  } else if (keyCode === UP_ARROW && carImgY === carImgYPosition3) {
+    carImgY = carImgYPosition2;
+  } else if (keyCode === UP_ARROW && carImgY === carImgYPosition4) {
+    carImgY = carImgYPosition3;
+  } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition1) {
+    carImgY = carImgYPosition2;
+  } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition2) {
+    carImgY = carImgYPosition3;
+  } else if (keyCode === DOWN_ARROW && carImgY === carImgYPosition3) {
+    carImgY = carImgYPosition4;
   }
 
-  if (keyCode === RIGHT_ARROW && carImgY === pixelScale * 81) {
-    carImgY = carImgY - pixelScale * 83;
-  } else if (keyCode === RIGHT_ARROW && carImgY === pixelScale * 172) {
-    carImgY = carImgY - pixelScale * 91;
-  } else if (keyCode === RIGHT_ARROW && carImgY === pixelScale * 255) {
-    carImgY = carImgY - pixelScale * 83;
-  } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * -2) {
-    carImgY = carImgY + pixelScale * 83;
-  } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * 81) {
-    carImgY = carImgY + pixelScale * 91;
-  } else if (keyCode === LEFT_ARROW && carImgY === pixelScale * 172) {
-    carImgY = carImgY + pixelScale * 83;
+  if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition2) {
+    carImgY = carImgYPosition1;
+  } else if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition3) {
+    carImgY = carImgYPosition2;
+  } else if (keyCode === RIGHT_ARROW && carImgY === carImgYPosition4) {
+    carImgY = carImgYPosition3;
+  } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition1) {
+    carImgY = carImgYPosition2;
+  } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition2) {
+    carImgY = carImgYPosition3;
+  } else if (keyCode === LEFT_ARROW && carImgY === carImgYPosition3) {
+    carImgY = carImgYPosition4;
   }
-  
-  windowResized
 }
 
 //Snowflake class
@@ -633,7 +791,7 @@ function snowflake() {
   this.posX = 0;
   this.posY = random(-50, 0);
   this.initialangle = random(0, 2 * PI);
-  this.size = random(2, 5);
+  this.size = random(snowflakeMinRadius, snowflakeMaxRadius);
 
   //Radius of snowflake spiral
   //Chosen so the snowflakes are uniformly spread out in area
@@ -646,7 +804,7 @@ function snowflake() {
     this.posX = width / 2 + this.radius * sin(angle);
 
     //Different size snowflakes fall at slightly different y speeds
-    this.posY += pow(this.size, 0.5);
+    this.posY += pow(this.size, pixelScale * 0.5);
 
     //Delete snowflake if past end of screen
     if (this.posY > height) {
@@ -663,13 +821,15 @@ function snowflake() {
 
 //Function for the time elapsed text in the top right corner
 function timerText() {
-  var timerTextWidth = pixelScale * 130;
+  var timerTextWidth = pixelScale * 160;
 
   var timerTextX = width - timerTextWidth;
 
+  var fontSize = pixelScale * 15;
+
   fill("white");
   textFont("Helvetica");
-  textSize(12);
+  textSize(fontSize);
   textAlign(RIGHT, TOP);
   text(
     textContents,
@@ -699,10 +859,10 @@ function postDeathSequence() {
 
   x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
   x2 += scrollSpeed;
-  uncomingCarX = uncomingCarX + 4; //Cancel out the vehicle movements, stopping them from moving
-  uncomingSemiX = uncomingSemiX + 4;
-  oldSlowTruckX = oldSlowTruckX + 1;
-  slowCarX = slowCarX + 1;
+  uncomingCarX = uncomingCarX + pixelScale * 4; //Cancel out the vehicle movements, stopping them from moving
+  uncomingSemiX = uncomingSemiX + pixelScale * 4;
+  oldSlowTruckX = oldSlowTruckX + pixelScale * 1;
+  slowCarX = slowCarX + pixelScale * 1;
   circleY = height / 2;
   circleX = width / 2;
   explosion();
@@ -710,7 +870,7 @@ function postDeathSequence() {
   timeElapsed--; //Cancel out the time elapsed timer
 
   //Once the circle covers the screen, display post death text
-  if (postDeathSequenceCounter >= 120) {
+  if (circleRadius >= width * 1.5) {
     postDeathText();
   }
 }
@@ -720,16 +880,17 @@ function postDeathText() {
   text2X = width / (pixelScale * 300);
   text2Y = height / (pixelScale * 33);
   text2Width = width;
-  text2Height = height / (pixelScale * 3);
+  text2Height = height;
+
+  var postDeathTextSize = pixelScale * 24;
 
   fill("white");
   textFont("Helvetica");
-  textSize(24);
+  textSize(postDeathTextSize);
   textAlign(CENTER, TOP);
   text(text2Contents, text2X, text2Y, text2Width, text2Height);
 }
 
 function windowResized() {
   resizeCanvas(canvasWidth, canvasHeight);
-  centerCanvas();
 }
