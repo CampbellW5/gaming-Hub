@@ -403,7 +403,7 @@ function setup() {
 
   timerText();
   
-  speedIncreaseText();
+  //speedIncreaseText();
 }
 
 function draw() {
@@ -415,7 +415,7 @@ function draw() {
 
     speedUpTimer++;
     
-    speedIncreaseText();
+    //speedIncreaseText();
 
     text2Contents =
       "You died. \n You survived " +
