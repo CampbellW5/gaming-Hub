@@ -210,7 +210,7 @@ function preload() {
 
 function setup() {
   canvasWidth = windowWidth * 0.98;
-  canvasHeight = windowHeight * 0.3998;
+  canvasHeight = windowHeight * 0.3998
 
   winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
   
@@ -365,37 +365,39 @@ function setup() {
 
   image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
   
-  startGameButtonColor = "#3f93dfff";
+  startGameButtonColor = "white";
   startGameButtonX = width * 0.178;
-  startGameButtonY = canvasY + height;
+  startGameButtonY = canvasY + windowHeight * 0.3998;
 
   startGameButton = createButton("Start/Resume Game");
   startGameButton.mouseClicked(startGame);
   startGameButton.style("font-size", "1.5vw");
-  
+  startGameButton.style("color", "#3f93dfff");
   startGameButton.style("background-color", startGameButtonColor);
   startGameButton.position(startGameButtonX, startGameButtonY);
 
   
-  pauseGameButtonColor = "#3f93dfff"
+  pauseGameButtonColor = "white"
   pauseGameButtonX = width * 0.462;
-  pauseGameButtonY = canvasY + height;
+  pauseGameButtonY = canvasY + windowHeight * 0.3998;
   
   pauseGameButton = createButton("Pause Game");
   pauseGameButton.mouseClicked(pauseGame);
   pauseGameButton.style("font-size", "1.5vw");
+  pauseGameButton.style("color", "#3f93dfff");
   pauseGameButton.style("background-color", pauseGameButtonColor);
   pauseGameButton.position(pauseGameButtonX, pauseGameButtonY);
 
   
-  restartGameButtonColor = "#3f93dfff";
+  restartGameButtonColor = "white";
   restartGameButtonX = width * 0.715;
-  restartGameButtonY = canvasY + height;
+  restartGameButtonY = canvasY + windowHeight * 0.3998;
     
   restartGameButton = createButton("Restart Game");
   restartGameButton.mouseClicked(restartGame);
   restartGameButton.style("font-size", "1.5vw");
   restartGameButton.style("background-color", restartGameButtonColor);
+  restartGameButton.style("color", "#3f93dfff");
   restartGameButton.position(restartGameButtonX, restartGameButtonY);
   
 
@@ -408,8 +410,6 @@ function draw() {
   
   if (startGameNumber === 1) {
     fill("grey");
-    
-    print(canvasY + height);
 
     timeElapsed++; //Start time elapsed timer
 
@@ -849,11 +849,11 @@ function snowflake() {
 function pauseGame() {
   startGameNumber = 2;
 
-  keyPressedInitializationNumber = 0;
+  keyPressedIntializationNumber = 0;
 }
 
 function startGame() {
-  keyPressedInitializationNumber = 0;
+  keyPressedIntializationNumber = 0;
 
   startGameNumber = 1;
   
@@ -861,7 +861,7 @@ function startGame() {
 }
 
 function restartGame() {
-  keyPressedInitializationNumber = 0;
+  keyPressedIntializationNumber = 0;
 
   snowflakePhase = 2;
 
@@ -992,7 +992,11 @@ function speedIncreaseText() {
 }
 
 function centerCanvas() {
-  canvasX = (windowWidth - width) / 2;
-  canvasY = (windowHeight - height) / 2;
+  canvasX = (windowWidth - width) / 1.5;
+  canvasY = (windowHeight - height) / 1.5;
   winterGetawayCanvas.position(canvasX, canvasY);
+}
+
+function windowResized() {
+  pauseGame();
 }
