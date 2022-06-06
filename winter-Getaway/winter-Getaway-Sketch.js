@@ -1,7 +1,9 @@
 //Intialize variables and constants
-var bgImg;
+let bgImg;
 var x1 = 0;
 var x2;
+
+let carImg;
 
 var carImgX;
 var carImgY;
@@ -11,7 +13,7 @@ var carImgHeight;
 
 var scrollSpeed;
 
-var uncomingCarImg;
+let uncomingCarImg;
 
 var uncomingCarY;
 
@@ -26,7 +28,7 @@ var uncomingCarHeight;
 
 var uncomingCarAppear;
 
-var uncomingSemiImg;
+let uncomingSemiImg;
 
 var uncomingSemiY;
 
@@ -41,7 +43,7 @@ var uncomingSemiHeight;
 
 var uncomingSemiAppear;
 
-var oldSlowTruckImg;
+let oldSlowTruckImg;
 
 var oldSlowTruckY;
 
@@ -60,7 +62,7 @@ var uncomingSemiX2;
 
 var uncomingCarX2;
 
-var slowCarImg;
+let slowCarImg;
 
 var slowCarY;
 
@@ -155,9 +157,35 @@ var snowflakeMaxRadius;
 
 var keyPressedIntializationNumber = 0;
 
-var button;
+var startGameButton;
+var restartGameButton;
+var pauseGameButton;
 
 var startGameNumber = 0;
+
+var winterGetawayCanvas;
+
+var winterGetawayCanvas2;
+
+var snowflakePhase = 1;
+
+var text3X;
+var text3Y;
+var text3Width;
+var text3Height;
+  
+var speedIncreaseTextSize;
+  
+var text3Contents;
+
+var winterGetawayCanvas;
+var canvasX;
+var canvasY;
+
+var pauseGameButtonFontSize;
+var pauseGameButtonColor;
+var pauseGameButtonX;
+var pauseGameButtonY;
 
 //Preload images so that they are ready when the game begins
 function preload() {
@@ -184,7 +212,9 @@ function setup() {
   canvasWidth = windowWidth * 0.98;
   canvasHeight = windowHeight * 0.3998;
 
-  createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
+  winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
+  
+  centerCanvas();
 
   pixelScale = windowHeight * 0.0012;
 
@@ -326,445 +356,427 @@ function setup() {
   slowCarX = floor(random(slowCarXMin, slowCarXMax));
 
   noStroke();
-  
+
   image(bgImg, x1, 0, width, pixelScale * 162);
   image(bgImg, x2, 0, width, pixelScale * 162);
 
   image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
   image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
-  
+
   image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
   
-  button = createButton("Start Game");
-  button.mouseClicked(startGame);
+  startGameButtonColor = "#3f93dfff";
+  startGameButtonX = width * 0.178;
+  startGameButtonY = canvasY + height;
+
+  startGameButton = createButton("Start/Resume Game");
+  startGameButton.mouseClicked(startGame);
+  startGameButton.style("font-size", "1.5vw");
+  
+  startGameButton.style("background-color", startGameButtonColor);
+  startGameButton.position(startGameButtonX, startGameButtonY);
+
+  
+  pauseGameButtonColor = "#3f93dfff"
+  pauseGameButtonX = width * 0.462;
+  pauseGameButtonY = canvasY + height;
+  
+  pauseGameButton = createButton("Pause Game");
+  pauseGameButton.mouseClicked(pauseGame);
+  pauseGameButton.style("font-size", "1.5vw");
+  pauseGameButton.style("background-color", pauseGameButtonColor);
+  pauseGameButton.position(pauseGameButtonX, pauseGameButtonY);
+
+  
+  restartGameButtonColor = "#3f93dfff";
+  restartGameButtonX = width * 0.715;
+  restartGameButtonY = canvasY + height;
+    
+  restartGameButton = createButton("Restart Game");
+  restartGameButton.mouseClicked(restartGame);
+  restartGameButton.style("font-size", "1.5vw");
+  restartGameButton.style("background-color", restartGameButtonColor);
+  restartGameButton.position(restartGameButtonX, restartGameButtonY);
+  
+
+  timerText();
+  
+  speedIncreaseText();
 }
 
 function draw() {
-  if (startGameNumber === 1) {
-  /*if (uncomingSemiY === uncomingSemiYPosition1 && uncomingCarY === uncomingCarYPosition1) {
-     print(uncomingCarY);
-     print(uncomingSemiY);
-  }
   
-  if (uncomingSemiY === uncomingSemiYPosition2 && uncomingCarY === uncomingCarYPosition2) {
-     print(uncomingCarY);
-     print(uncomingSemiY);
-  }
-  */
+  if (startGameNumber === 1) {
+    fill("grey");
+    
+    print(canvasY + height);
 
-  //print(carImgY);
-  fill("grey");
+    timeElapsed++; //Start time elapsed timer
 
-  timeElapsed++; //Start time elapsed timer
+    speedUpTimer++;
+    
+    speedIncreaseText();
 
-  speedUpTimer++;
+    text2Contents =
+      "You died. \n You survived " +
+      round(timeElapsed / 60) +
+      " seconds. \n Press the play button to start another round.";
 
-  textContents = "Time Elapsed: " + round(timeElapsed / 60) + " s";
-  //Divide by 60 and round to turn time elapsed into seconds
+    image(bgImg, x1, 0, width, pixelScale * 162);
+    image(bgImg, x2, 0, width, pixelScale * 162);
 
-  text2Contents =
-    "You died. \n You survived " +
-    round(timeElapsed / 60) +
-    " seconds. \n Press the play button to start another round.";
+    image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
+    image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
 
-  image(bgImg, x1, 0, width, pixelScale * 162);
-  image(bgImg, x2, 0, width, pixelScale * 162);
+    if (x1 < -width) {
+      x1 = width;
+    }
+    if (x2 < -width) {
+      x2 = width;
+    }
 
-  image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
-  image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
+    x1 -= scrollSpeed; //Make it so the two roads will scroll to the left
+    x2 -= scrollSpeed;
 
-  if (x1 < -width) {
-    x1 = width;
-  }
-  if (x2 < -width) {
-    x2 = width;
-  }
+    /*If and else if statements to control the y-positions
+     *Eliminates instances where vehicles appear on top of each other
+     */
+    if (
+      uncomingCarY === uncomingCarYPosition1 &&
+      uncomingSemiY === uncomingSemiYPosition1 &&
+      uncomingCarX >= width &&
+      uncomingSemiX <= width
+    ) {
+      uncomingCarY = uncomingCarYPosition2;
+    } else if (
+      uncomingCarY === uncomingCarYPosition2 &&
+      uncomingSemiY === uncomingSemiYPosition2 &&
+      uncomingCarX >= width &&
+      uncomingSemiX <= width
+    ) {
+      uncomingCarY = uncomingCarYPosition1;
+    } else if (
+      uncomingCarY === uncomingCarYPosition2 &&
+      uncomingSemiY === uncomingSemiYPosition2 &&
+      uncomingCarX <= width &&
+      uncomingSemiX >= width
+    ) {
+      uncomingSemiY = uncomingSemiYPosition1;
+    } else if (
+      uncomingCarY === uncomingCarYPosition1 &&
+      uncomingSemiY === uncomingSemiYPosition1 &&
+      uncomingCarX <= width &&
+      uncomingSemiX >= width
+    ) {
+      uncomingSemiY = uncomingSemiYPosition2;
+    } else if (
+      uncomingCarY === uncomingCarYPosition1 &&
+      uncomingSemiY === uncomingSemiYPosition1 &&
+      uncomingSemiX >= width &&
+      uncomingCarX >= width
+    ) {
+      uncomingCarY = uncomingCarYPosition2;
+    } else if (
+      uncomingCarY === uncomingCarYPosition2 &&
+      uncomingSemiY === uncomingSemiYPosition2 &&
+      uncomingSemiX >= width &&
+      uncomingCarX >= width
+    ) {
+      uncomingCarY = uncomingCarYPosition1;
+    }
 
-  x1 -= scrollSpeed; //Make it so the two roads will scroll to the left
-  x2 -= scrollSpeed;
+    if (
+      slowCarY === slowCarYPosition1 &&
+      oldSlowTruckY === oldSlowTruckYPosition1 &&
+      slowCarX >= width &&
+      oldSlowTruckX <= width
+    ) {
+      slowCarY = slowCarYPosition2;
+    } else if (
+      slowCarY === slowCarYPosition2 &&
+      oldSlowTruckY === oldSlowTruckYPosition2 &&
+      slowCarX >= width &&
+      oldSlowTruckX <= width
+    ) {
+      slowCarY = slowCarYPosition1;
+    } else if (
+      slowCarY === slowCarYPosition1 &&
+      oldSlowTruckY === slowCarYPosition1 &&
+      slowCarX <= width &&
+      oldSlowTruckX >= width
+    ) {
+      oldSlowTruckY = oldSlowTruckYPosition2;
+    } else if (
+      slowCarY === slowCarYPosition2 &&
+      oldSlowTruckY === oldSlowTruckYPosition2 &&
+      slowCarX <= width &&
+      oldSlowTruckX >= width
+    ) {
+      oldSlowTruckY = oldSlowTruckYPosition1;
+    } else if (
+      slowCarY === slowCarYPosition1 &&
+      oldSlowTruckY === oldSlowTruckYPosition1 &&
+      slowCarX >= width &&
+      oldSlowTruckX >= width
+    ) {
+      slowCarY = slowCarYPosition2;
+    } else if (
+      slowCarY === slowCarYPosition2 &&
+      oldSlowTruckY === oldSlowTruckYPosition2 &&
+      slowCarX >= width &&
+      oldSlowTruckX >= width
+    ) {
+      slowCarY = slowCarYPosition1;
+    }
 
-  /*If and else if statements to control the y-positions
-   *Eliminates instances where vehicles appear on top of each other
-   */
-  if (
-    uncomingCarY === uncomingCarYPosition1 &&
-    uncomingSemiY === uncomingSemiYPosition1 &&
-    uncomingCarX >= width &&
-    uncomingSemiX <= width
-  ) {
-    uncomingCarY = uncomingCarYPosition2;
-  } else if (
-    uncomingCarY === uncomingCarYPosition2 &&
-    uncomingSemiY === uncomingSemiYPosition2 &&
-    uncomingCarX >= width &&
-    uncomingSemiX <= width
-  ) {
-    uncomingCarY = uncomingCarYPosition1;
-  } else if (
-    uncomingCarY === uncomingCarYPosition2 &&
-    uncomingSemiY === uncomingSemiYPosition2 &&
-    uncomingCarX <= width &&
-    uncomingSemiX >= width
-  ) {
-    uncomingSemiY = uncomingSemiYPosition1;
-  } else if (
-    uncomingCarY === uncomingCarYPosition1 &&
-    uncomingSemiY === uncomingSemiYPosition1 &&
-    uncomingCarX <= width &&
-    uncomingSemiX >= width
-  ) {
-    uncomingSemiY = uncomingSemiYPosition2;
-  } else if (
-    uncomingCarY === uncomingCarYPosition1 &&
-    uncomingSemiY === uncomingSemiYPosition1 &&
-    uncomingSemiX >= width &&
-    uncomingCarX >= width
-  ) {
-    uncomingCarY = uncomingCarYPosition2;
-  } else if (
-    uncomingCarY === uncomingCarYPosition2 &&
-    uncomingSemiY === uncomingSemiYPosition2 &&
-    uncomingSemiX >= width &&
-    uncomingCarX >= width
-  ) {
-    uncomingCarY = uncomingCarYPosition1;
-  }
+    //Start time running clocks
+    timeRunning = timeRunning + 1;
 
-  if (
-    slowCarY === slowCarYPosition1 &&
-    oldSlowTruckY === oldSlowTruckYPosition1 &&
-    slowCarX >= width &&
-    oldSlowTruckX <= width
-  ) {
-    slowCarY = slowCarYPosition2;
-  } else if (
-    slowCarY === slowCarYPosition2 &&
-    oldSlowTruckY === oldSlowTruckYPosition2 &&
-    slowCarX >= width &&
-    oldSlowTruckX <= width
-  ) {
-    slowCarY = slowCarYPosition1;
-  } else if (
-    slowCarY === slowCarYPosition1 &&
-    oldSlowTruckY === slowCarYPosition1 &&
-    slowCarX <= width &&
-    oldSlowTruckX >= width
-  ) {
-    oldSlowTruckY = oldSlowTruckYPosition2;
-  } else if (
-    slowCarY === slowCarYPosition2 &&
-    oldSlowTruckY === oldSlowTruckYPosition2 &&
-    slowCarX <= width &&
-    oldSlowTruckX >= width
-  ) {
-    oldSlowTruckY = oldSlowTruckYPosition1;
-  } else if (
-    slowCarY === slowCarYPosition1 &&
-    oldSlowTruckY === oldSlowTruckYPosition1 &&
-    slowCarX >= width &&
-    oldSlowTruckX >= width
-  ) {
-    slowCarY = slowCarYPosition2;
-  } else if (
-    slowCarY === slowCarYPosition2 &&
-    oldSlowTruckY === oldSlowTruckYPosition2 &&
-    slowCarX >= width &&
-    oldSlowTruckX >= width
-  ) {
-    slowCarY = slowCarYPosition1;
-  }
+    timeRunning2 = timeRunning2 + 1;
 
-  //Start time running clocks
-  timeRunning = timeRunning + 1;
+    timeRunning3 = timeRunning3 + 1;
 
-  timeRunning2 = timeRunning2 + 1;
+    timeRunning4 = timeRunning4 + 1;
 
-  timeRunning3 = timeRunning3 + 1;
+    timeRunningTotal = timeRunningTotal + 1;
 
-  timeRunning4 = timeRunning4 + 1;
+    image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
 
-  timeRunningTotal = timeRunningTotal + 1;
+    if (carImgX >= 400) {
+      carImgX = 0;
+    }
 
-  image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+    //Use if and else if statements so that vehicles appear at random times
+    if (timeRunning === uncomingCarAppear) {
+      timeRunning = timeRunning - 1;
 
-  if (carImgX >= 400) {
-    carImgX = 0;
-  }
+      image(
+        uncomingCarImg,
+        uncomingCarX,
+        uncomingCarY,
+        uncomingCarWidth,
+        uncomingCarHeight
+      );
 
-  //Use if and else if statements so that vehicles appear at random times
-  if (timeRunning === uncomingCarAppear) {
-    timeRunning = timeRunning - 1;
+      uncomingCarX = uncomingCarX - pixelScale * 4;
+    }
 
-    image(
-      uncomingCarImg,
-      uncomingCarX,
-      uncomingCarY,
-      uncomingCarWidth,
-      uncomingCarHeight
-    );
+    if (timeRunning2 === uncomingSemiAppear) {
+      timeRunning2 = timeRunning2 - 1;
 
-    uncomingCarX = uncomingCarX - pixelScale * 4;
-  }
+      image(
+        uncomingSemiImg,
+        uncomingSemiX,
+        uncomingSemiY,
+        uncomingSemiWidth,
+        uncomingSemiHeight
+      );
 
-  if (timeRunning2 === uncomingSemiAppear) {
-    timeRunning2 = timeRunning2 - 1;
+      uncomingSemiX = uncomingSemiX - pixelScale * 4;
+    }
 
-    image(
-      uncomingSemiImg,
-      uncomingSemiX,
-      uncomingSemiY,
-      uncomingSemiWidth,
-      uncomingSemiHeight
-    );
+    if (timeRunning3 === oldSlowTruckAppear) {
+      timeRunning3 = timeRunning3 - 1;
 
-    uncomingSemiX = uncomingSemiX - pixelScale * 4;
-  }
+      image(
+        oldSlowTruckImg,
+        oldSlowTruckX,
+        oldSlowTruckY,
+        oldSlowTruckWidth,
+        oldSlowTruckHeight
+      );
 
-  if (timeRunning3 === oldSlowTruckAppear) {
-    timeRunning3 = timeRunning3 - 1;
+      oldSlowTruckX = oldSlowTruckX - pixelScale * 1;
+    }
 
-    image(
-      oldSlowTruckImg,
-      oldSlowTruckX,
-      oldSlowTruckY,
-      oldSlowTruckWidth,
-      oldSlowTruckHeight
-    );
+    if (timeRunning4 === slowCarAppear) {
+      timeRunning4 = timeRunning4 - 1;
 
-    oldSlowTruckX = oldSlowTruckX - pixelScale * 1;
-  }
+      image(slowCarImg, slowCarX, slowCarY, slowCarWidth, slowCarHeight);
 
-  if (timeRunning4 === slowCarAppear) {
-    timeRunning4 = timeRunning4 - 1;
+      slowCarX = slowCarX - pixelScale * 1;
+    }
 
-    image(slowCarImg, slowCarX, slowCarY, slowCarWidth, slowCarHeight);
+    /*while (speedUpTimer / 60 >= 100 && speedUpTimer / 60 <= 199) {
+      scrollSpeed = pixelScale * 4 * 1.05;
 
-    slowCarX = slowCarX - pixelScale * 1;
-  }
+      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.05;
 
-  for (let i = 0; i < 40; i++) {
-    if (speedUpTimer / 60 === 22) {
+      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.05;
+
+      slowCarX = slowCarX - pixelScale * 1 * 1.05;
+
+      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.05;
+    }
+
+    while (speedUpTimer / 60 >= 200 && speedUpTimer / 60 <= 299) {
       scrollSpeed = pixelScale * 4 * 1.1;
 
-      if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.1;
-      }
+      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.1;
 
-      if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.1;
-      }
+      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.1;
 
-      if (slowCarX >= width) {
-        slowCarX = slowCarX - pixelScale * 1 * 1.1;
-      }
+      slowCarX = slowCarX - pixelScale * 1 * 1.1;
 
-      if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.1;
-      }
+      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.1;
     }
 
-    if (speedUpTimer / 60 === 24) {
+    while (speedUpTimer / 60 >= 300 && speedUpTimer / 60 <= 399) {
+      scrollSpeed = pixelScale * 4 * 1.15;
+
+      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.15;
+
+      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.15;
+
+      slowCarX = slowCarX - pixelScale * 1 * 1.15;
+
+      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.15;
+    }
+
+    while (speedUpTimer / 60 >= 400 && speedUpTimer / 60 <= 499) {
       scrollSpeed = pixelScale * 4 * 1.2;
 
-      if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.2;
-      }
+      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.2;
 
-      if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.2;
-      }
+      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.2;
 
-      if (slowCarX >= width) {
-        slowCarX = slowCarX - pixelScale * 1 * 1.2;
-      }
+      slowCarX = slowCarX - pixelScale * 1 * 1.2;
 
-      if (oldSlowTruckX >= width) {
-        oldSlowTruckX = -(pixelScale * 1 * 1.2);
+      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.2;
+    }
+
+    while (speedUpTimer / 60 >= 500 && speedUpTimer / 60 <= 599) {
+      scrollSpeed = pixelScale * 4 * 1.25;
+
+      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.25;
+
+      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.25;
+
+      slowCarX = slowCarX - pixelScale * 1 * 1.25;
+
+      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.25;
+    }
+    */
+
+    /*If the controlled green luxury car hits another vehicle, game over, commence post death
+     *sequence
+     */
+    if (
+      uncomingCarY === pixelScale * 85 &&
+      carImgY === pixelScale * 81 &&
+      uncomingCarX <= pixelScale * 130 &&
+      uncomingCarX >= pixelScale * -150
+    ) {
+      postDeathSequence();
+    } else if (
+      uncomingCarY === pixelScale * 255 &&
+      carImgY === pixelScale * 255 &&
+      uncomingCarX <= pixelScale * 130 &&
+      uncomingCarX >= pixelScale * -150
+    ) {
+      postDeathSequence();
+    }
+
+    if (
+      uncomingSemiY === pixelScale * 89 &&
+      carImgY === pixelScale * 81 &&
+      uncomingSemiX <= pixelScale * 134 &&
+      uncomingSemiX >= pixelScale * -425
+    ) {
+      postDeathSequence();
+    } else if (
+      uncomingSemiY === pixelScale * 259 &&
+      carImgY === pixelScale * 255 &&
+      uncomingSemiX <= pixelScale * 134 &&
+      uncomingSemiX >= pixelScale * -425
+    ) {
+      postDeathSequence();
+    }
+
+    if (
+      oldSlowTruckY === pixelScale * 2.75 &&
+      carImgY === pixelScale * -2 &&
+      oldSlowTruckX <= pixelScale * 140 &&
+      oldSlowTruckX >= pixelScale * -185
+    ) {
+      postDeathSequence();
+    } else if (
+      oldSlowTruckY === pixelScale * 172.5 &&
+      carImgY === pixelScale * 172 &&
+      oldSlowTruckX <= pixelScale * 140 &&
+      oldSlowTruckX >= pixelScale * -185
+    ) {
+      postDeathSequence();
+    }
+
+    if (
+      slowCarY === pixelScale * 2.75 &&
+      carImgY === pixelScale * -2 &&
+      slowCarX <= pixelScale * 140 &&
+      slowCarX >= pixelScale * -181
+    ) {
+      postDeathSequence();
+    } else if (
+      slowCarY === pixelScale * 172.5 &&
+      carImgY === pixelScale * 172 &&
+      slowCarX <= pixelScale * 140 &&
+      slowCarX >= pixelScale * -181
+    ) {
+      postDeathSequence();
+    }
+
+    /*For loop to make 40 vehicles of each type appear one after another
+     *Y and x coordinates are random each time for each vehicle
+     */
+    for (let i = 0; i < 40; i++) {
+      if (oldSlowTruckX <= pixelScale * -300) {
+        oldSlowTruckY = random(oldSlowTruckY2Options);
+        oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
       }
     }
 
-    if (speedUpTimer / 60 === 26) {
-      scrollSpeed = pixelScale * 4 * 1.3;
-
-      if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.3;
-      }
-
-      if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.3;
-      }
-
-      if (slowCarX >= width) {
-        slowCarX = slowCarX - pixelScale * 1 * 1.3;
-      }
-
-      if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.3;
+    for (let i = 0; i < 40; i++) {
+      if (uncomingCarX <= pixelScale * -290) {
+        uncomingCarY = random(uncomingCarY2Options);
+        uncomingCarX = uncomingCarX2;
       }
     }
 
-    if (speedUpTimer / 60 === 28) {
-      scrollSpeed = pixelScale * 4 * 1.4;
-
-      if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.4;
-      }
-
-      if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.4;
-      }
-
-      if (slowCarX >= width) {
-        slowCarX = slowCarX - pixelScale * 1 * 1.4;
-      }
-
-      if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.4;
+    for (let i = 0; i < 10; i++) {
+      if (uncomingSemiX <= pixelScale * -550) {
+        uncomingSemiY = random(uncomingSemiY2Options);
+        uncomingSemiX = uncomingSemiX2;
       }
     }
 
-    if (speedUpTimer / 60 === 30) {
-      scrollSpeed = pixelScale * 4 * 1.5;
-
-      if (uncomingCarX >= width) {
-        uncomingCarX = uncomingCarX - pixelScale * 4 * 1.5;
-      }
-
-      if (uncomingSemiX >= width) {
-        uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.5;
-      }
-
-      if (slowCarX >= width) {
-        slowCarX = slowCarX - pixelScale * 1 * 1.5;
-      }
-
-      if (oldSlowTruckX >= width) {
-        oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.5;
+    for (let i = 0; i < 10; i++) {
+      if (slowCarX <= pixelScale * -296) {
+        slowCarY = random(slowCarY2Options);
+        slowCarX = floor(random(slowCarXMin, slowCarXMax));
       }
     }
 
-    if (speedUpTimer / 60 === 60) {
-      speedUpTimer = 0;
+    //Rectangle to make divider between highways
+    fill("grey");
+    rect(0, pixelScale * 162, width, pixelScale * 8);
+
+    if (startGameNumber === 1) {
+      let t = frameCount / 60; //Update time
+
+      //Create a random number of snowflakes each frame
+      for (let i = 0; i < random(5); i++) {
+        snowflakes.push(new snowflake()); //Append snowflake object
+      }
+
+      //Loop through snowflakes with a for..of loop
+      for (let flake of snowflakes) {
+        flake.update(t); //Update snowflake position
+        flake.display(); //Draw snowflake
+      }
     }
+
+    timerText();
   }
-
-  /*If the controlled green luxury car hits another vehicle, game over, commence post death
-   *sequence
-   */
-  if (
-    uncomingCarY === pixelScale * 85 &&
-    carImgY === pixelScale * 81 &&
-    uncomingCarX <= pixelScale * 130 &&
-    uncomingCarX >= pixelScale * -150
-  ) {
-    postDeathSequence();
-  } else if (
-    uncomingCarY === pixelScale * 255 &&
-    carImgY === pixelScale * 255 &&
-    uncomingCarX <= pixelScale * 130 &&
-    uncomingCarX >= pixelScale * -150
-  ) {
-    postDeathSequence();
-  }
-
-  if (
-    uncomingSemiY === pixelScale * 89 &&
-    carImgY === pixelScale * 81 &&
-    uncomingSemiX <= pixelScale * 134 &&
-    uncomingSemiX >= pixelScale * -425
-  ) {
-    postDeathSequence();
-  } else if (
-    uncomingSemiY === pixelScale * 259 &&
-    carImgY === pixelScale * 255 &&
-    uncomingSemiX <= pixelScale * 134 &&
-    uncomingSemiX >= pixelScale * -425
-  ) {
-    postDeathSequence();
-  }
-
-  if (
-    oldSlowTruckY === pixelScale * 2.75 &&
-    carImgY === pixelScale * -2 &&
-    oldSlowTruckX <= pixelScale * 140 &&
-    oldSlowTruckX >= pixelScale * -185
-  ) {
-    postDeathSequence();
-  } else if (
-    oldSlowTruckY === pixelScale * 172.5 &&
-    carImgY === pixelScale * 172 &&
-    oldSlowTruckX <= pixelScale * 140 &&
-    oldSlowTruckX >= pixelScale * -185
-  ) {
-    postDeathSequence();
-  }
-
-  if (
-    slowCarY === pixelScale * 2.75 &&
-    carImgY === pixelScale * -2 &&
-    slowCarX <= pixelScale * 140 &&
-    slowCarX >= pixelScale * -181
-  ) {
-    postDeathSequence();
-  } else if (
-    slowCarY === pixelScale * 172.5 &&
-    carImgY === pixelScale * 172 &&
-    slowCarX <= pixelScale * 140 &&
-    slowCarX >= pixelScale * -181
-  ) {
-    postDeathSequence();
-  }
-
-  /*For loop to make 40 vehicles of each type appear one after another
-   *Y and x coordinates are random each time for each vehicle
-   */
-  for (let i = 0; i < 40; i++) {
-    if (oldSlowTruckX <= pixelScale * -300) {
-      oldSlowTruckY = random(oldSlowTruckY2Options);
-      oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
-    }
-  }
-
-  for (let i = 0; i < 40; i++) {
-    if (uncomingCarX <= pixelScale * -290) {
-      uncomingCarY = random(uncomingCarY2Options);
-      uncomingCarX = uncomingCarX2;
-    }
-  }
-
-  for (let i = 0; i < 10; i++) {
-    if (uncomingSemiX <= pixelScale * -550) {
-      uncomingSemiY = random(uncomingSemiY2Options);
-      uncomingSemiX = uncomingSemiX2;
-    }
-  }
-
-  for (let i = 0; i < 10; i++) {
-    if (slowCarX <= pixelScale * -296) {
-      slowCarY = random(slowCarY2Options);
-      slowCarX = floor(random(slowCarXMin, slowCarXMax));
-    }
-  }
-
-  //Rectangle to make divider between highways
-  fill("grey");
-  rect(0, pixelScale * 162, width, pixelScale * 8);
-
-  let t = frameCount / 60; //Update time
-
-  //Create a random number of snowflakes each frame
-  for (let i = 0; i < random(5); i++) {
-    snowflakes.push(new snowflake()); //Append snowflake object
-  }
-
-  //Loop through snowflakes with a for..of loop
-  for (let flake of snowflakes) {
-    flake.update(t); //Update snowflake position
-    flake.display(); //Draw snowflake
-  }
-
-  timerText(); //Execute timerText function
-}
 }
 
 //Use the keyPressed function to initiate the keys
@@ -802,40 +814,94 @@ function keyPressed() {
 
 //Snowflake class
 function snowflake() {
-  //Initialize coordinates
-  this.posX = 0;
-  this.posY = random(-50, 0);
-  this.initialangle = random(0, 2 * PI);
-  this.size = random(snowflakeMinRadius, snowflakeMaxRadius);
+    //Initialize coordinates
+    this.posX = 0;
+    this.posY = random(-50, 0);
+    this.initialangle = random(0, 2 * PI);
+    this.size = random(snowflakeMinRadius, snowflakeMaxRadius);
 
-  //Radius of snowflake spiral
-  //Chosen so the snowflakes are uniformly spread out in area
-  this.radius = sqrt(random(pow(width / 2, 2)));
+    //Radius of snowflake spiral
+    //Chosen so the snowflakes are uniformly spread out in area
+    this.radius = sqrt(random(pow(width / 2, 2)));
 
-  this.update = function (time) {
-    //X-position follows a circle
-    let w = 0.6; //Angular speed
-    let angle = w * time + this.initialangle;
-    this.posX = width / 2 + this.radius * sin(angle);
+    this.update = function (time) {
+      //X-position follows a circle
+      let w = 0.6; //Angular speed
+      let angle = w * time + this.initialangle;
+      this.posX = width / 2 + this.radius * sin(angle);
 
-    //Different size snowflakes fall at slightly different y speeds
-    this.posY += pow(this.size, pixelScale * 0.5);
+      //Different size snowflakes fall at slightly different y speeds
+      this.posY += pow(this.size, pixelScale * 0.5);
 
-    //Delete snowflake if past end of screen
-    if (this.posY > height) {
-      let index = snowflakes.indexOf(this);
-      snowflakes.splice(index, 1);
-    }
-    fill("white");
-  };
+      //Delete snowflake if past end of screen
+      if (this.posY > height) {
+        let index = snowflakes.indexOf(this);
+        snowflakes.splice(index, 1);
+      }
+    };
+  fill("white");
 
   this.display = function () {
     ellipse(this.posX, this.posY, this.size);
   };
 }
 
+function pauseGame() {
+  startGameNumber = 2;
+
+  keyPressedInitializationNumber = 0;
+}
+
+function startGame() {
+  keyPressedInitializationNumber = 0;
+
+  startGameNumber = 1;
+  
+  speedIncreaseText();
+}
+
+function restartGame() {
+  keyPressedInitializationNumber = 0;
+
+  snowflakePhase = 2;
+
+  //Rectangle to make snowflakes disappear
+  fill("grey");
+  rect(0, pixelScale * 162, width, pixelScale * 8);
+
+  uncomingCarX = random(uncomingCarXOptions);
+  uncomingSemiX = random(uncomingSemiXOptions);
+  oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
+  slowCarX = floor(random(slowCarXMin, slowCarXMax));
+
+  timeRunning = 0;
+  timeRunning2 = 0;
+  timeRunning3 = 0;
+  timeRunning4 = 0;
+  timeRunningTotal = 0;
+
+  timeElapsed = 0;
+  speedUpTimer = 0;
+
+  image(bgImg, x1, 0, width, pixelScale * 162);
+  image(bgImg, x2, 0, width, pixelScale * 162);
+
+  image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
+  image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
+
+  carImgY = carImgYPosition1;
+
+  image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+
+  startGameNumber = 2;
+
+  timerText();
+}
+
 //Function for the time elapsed text in the top right corner
 function timerText() {
+  textContents = "Time Elapsed: " + round(timeElapsed / 60) + " s";
+
   var timerTextWidth = pixelScale * 160;
 
   var timerTextX = width - timerTextWidth;
@@ -870,9 +936,8 @@ function explosion() {
 
 //Function for the post death sequence
 function postDeathSequence() {
-  
   keyPressedIntializationNumber = 1;
-  
+
   postDeathSequenceCounter++;
 
   x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
@@ -909,10 +974,25 @@ function postDeathText() {
   text(text2Contents, text2X, text2Y, text2Width, text2Height);
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth * 0.98, windowHeight * 0.49);
+function speedIncreaseText() {
+  text3X = width / 2;
+  text3Y = height / 2;
+  text3Width = width / 2;
+  text3Height = height/ 2;
+  
+  speedIncreaseTextSize = pixelScale * 7;
+  
+  text3Contents = "Speed Increase >>>";
+  
+  fill("white");
+  textFont("Helvetica");
+  textSize(speedIncreaseTextSize);
+  textAlign(LEFT, TOP);
+  text(text3Contents, text3X, text3Y, text3Width, text3Height);
 }
 
-function startGame() {
-  startGameNumber = 1;
+function centerCanvas() {
+  canvasX = (windowWidth - width) / 2;
+  canvasY = (windowHeight - height) / 2;
+  winterGetawayCanvas.position(canvasX, canvasY);
 }
