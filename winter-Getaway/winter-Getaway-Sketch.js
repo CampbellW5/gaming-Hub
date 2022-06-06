@@ -365,31 +365,31 @@ function setup() {
 
   image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
   
-  startGameButtonColor = "white";
+  startGameButtonColor = "#3f93dfff";
   startGameButtonX = width * 0.178;
   startGameButtonY = canvasY + windowHeight * 0.3998;
 
   startGameButton = createButton("Start/Resume Game");
   startGameButton.mouseClicked(startGame);
   startGameButton.style("font-size", "1.5vw");
-  startGameButton.style("color", "#3f93dfff");
+  startGameButton.style("color", "white");
   startGameButton.style("background-color", startGameButtonColor);
   startGameButton.position(startGameButtonX, startGameButtonY);
 
   
-  pauseGameButtonColor = "white"
+  pauseGameButtonColor = "#3f93dfff"
   pauseGameButtonX = width * 0.462;
   pauseGameButtonY = canvasY + windowHeight * 0.3998;
   
   pauseGameButton = createButton("Pause Game");
   pauseGameButton.mouseClicked(pauseGame);
   pauseGameButton.style("font-size", "1.5vw");
-  pauseGameButton.style("color", "#3f93dfff");
+  pauseGameButton.style("color", "white");
   pauseGameButton.style("background-color", pauseGameButtonColor);
   pauseGameButton.position(pauseGameButtonX, pauseGameButtonY);
 
   
-  restartGameButtonColor = "white";
+  restartGameButtonColor = "#3f93dfff";
   restartGameButtonX = width * 0.715;
   restartGameButtonY = canvasY + windowHeight * 0.3998;
     
@@ -397,7 +397,7 @@ function setup() {
   restartGameButton.mouseClicked(restartGame);
   restartGameButton.style("font-size", "1.5vw");
   restartGameButton.style("background-color", restartGameButtonColor);
-  restartGameButton.style("color", "#3f93dfff");
+  restartGameButton.style("color", "white");
   restartGameButton.position(restartGameButtonX, restartGameButtonY);
   
 
