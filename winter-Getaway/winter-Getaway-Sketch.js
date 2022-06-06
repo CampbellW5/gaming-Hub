@@ -210,7 +210,7 @@ function preload() {
 
 function setup() {
   canvasWidth = windowWidth * 0.98;
-  canvasHeight = windowHeight * 0.3998
+  canvasHeight = windowHeight * 0.3998;
 
   winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
   
