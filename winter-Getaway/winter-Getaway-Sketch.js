@@ -992,7 +992,7 @@ function speedIncreaseText() {
 }
 
 function centerCanvas() {
-  canvasX = (windowWidth - width) / 1.5;
+  canvasX = (windowWidth - width) / 2;
   canvasY = (windowHeight - height) / 1.5;
   winterGetawayCanvas.position(canvasX, canvasY);
 }
