@@ -87,7 +87,7 @@ var timeRunning4 = 0;
 
 var timeRunningTotal = 0;
 
-let snowflakes = []; //Array to hold snowflake objects
+var snowflakes = []; //Array to hold snowflake objects
 
 var rectColour;
 
@@ -173,9 +173,9 @@ var text3X;
 var text3Y;
 var text3Width;
 var text3Height;
-  
+
 var speedIncreaseTextSize;
-  
+
 var text3Contents;
 
 var winterGetawayCanvas;
@@ -186,6 +186,22 @@ var pauseGameButtonFontSize;
 var pauseGameButtonColor;
 var pauseGameButtonX;
 var pauseGameButtonY;
+
+var timeToSpeedIncrease = 3;
+
+var resetCanvasButton;
+
+var windowResizedCounter = 0;
+
+var movementScale;
+
+var easyModeButtonTextColor;
+var mediumModeButtonTextColor;
+var hardModeButtonTextColor;
+
+var difficulty = "Easy";
+
+var speedModeNumber;
 
 //Preload images so that they are ready when the game begins
 function preload() {
@@ -210,13 +226,15 @@ function preload() {
 
 function setup() {
   canvasWidth = windowWidth * 0.98;
-  canvasHeight = windowHeight * 0.3998
+  canvasHeight = windowHeight * 0.3998;
 
   winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
-  
+
   centerCanvas();
 
   pixelScale = windowHeight * 0.0012;
+
+  movementScale = windowHeight * 0.0012;
 
   scrollSpeed = pixelScale * 4;
 
@@ -364,58 +382,83 @@ function setup() {
   image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
 
   image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
-  
+
   startGameButtonColor = "#3f93dfff";
-  startGameButtonX = width * 0.178;
+  startGameButtonX = windowWidth * 0.205;
   startGameButtonY = canvasY + windowHeight * 0.3998;
 
   startGameButton = createButton("Start/Resume Game");
   startGameButton.mouseClicked(startGame);
-  startGameButton.style("font-size", "1.5vw");
+  startGameButton.style("font-size", "1.5vh");
   startGameButton.style("color", "white");
   startGameButton.style("background-color", startGameButtonColor);
   startGameButton.position(startGameButtonX, startGameButtonY);
 
-  
-  pauseGameButtonColor = "#3f93dfff"
-  pauseGameButtonX = width * 0.462;
+  pauseGameButtonColor = "#3f93dfff";
+  pauseGameButtonX = windowWidth * 0.475;
   pauseGameButtonY = canvasY + windowHeight * 0.3998;
-  
+
   pauseGameButton = createButton("Pause Game");
   pauseGameButton.mouseClicked(pauseGame);
-  pauseGameButton.style("font-size", "1.5vw");
+  pauseGameButton.style("font-size", "1.5vh");
   pauseGameButton.style("color", "white");
   pauseGameButton.style("background-color", pauseGameButtonColor);
   pauseGameButton.position(pauseGameButtonX, pauseGameButtonY);
 
-  
   restartGameButtonColor = "#3f93dfff";
-  restartGameButtonX = width * 0.715;
+  restartGameButtonX = windowWidth * 0.7275;
   restartGameButtonY = canvasY + windowHeight * 0.3998;
-    
+
   restartGameButton = createButton("Restart Game");
   restartGameButton.mouseClicked(restartGame);
-  restartGameButton.style("font-size", "1.5vw");
+  restartGameButton.style("font-size", "1.5vh");
   restartGameButton.style("background-color", restartGameButtonColor);
   restartGameButton.style("color", "white");
   restartGameButton.position(restartGameButtonX, restartGameButtonY);
-  
+
+  easyModeButtonColor = "#3f93dfff";
+  easyModeButtonX = windowWidth * 0.236;
+  easyModeButtonY = windowHeight * 0.366;
+
+  easyModeButton = createButton("Easy");
+  easyModeButton.mouseClicked(easyMode);
+  easyModeButton.style("font-size", "1.5vh");
+  easyModeButton.style("color", "black");
+  easyModeButton.style("background-color", easyModeButtonColor);
+  easyModeButton.position(easyModeButtonX, easyModeButtonY);
+
+  mediumModeButtonColor = "#3f93dfff";
+  mediumModeButtonX = windowWidth * 0.4825;
+  mediumModeButtonY = windowHeight * 0.366;
+
+  mediumModeButton = createButton("Medium");
+  mediumModeButton.mouseClicked(mediumMode);
+  mediumModeButton.style("font-size", "1.5vh");
+  mediumModeButton.style("color", "white");
+  mediumModeButton.style("background-color", mediumModeButtonColor);
+  mediumModeButton.position(mediumModeButtonX, mediumModeButtonY);
+
+  hardModeButtonColor = "#3f93dfff";
+  hardModeButtonX = windowWidth * 0.7425;
+  hardModeButtonY = windowHeight * 0.366;
+
+  hardModeButton = createButton("Hard");
+  hardModeButton.mouseClicked(hardMode);
+  hardModeButton.style("font-size", "1.5vh");
+  hardModeButton.style("background-color", hardModeButtonColor);
+  hardModeButton.style("color", "white");
+  hardModeButton.position(hardModeButtonX, hardModeButtonY);
 
   timerText();
-  
-  //speedIncreaseText();
 }
 
 function draw() {
-  
   if (startGameNumber === 1) {
     fill("grey");
 
     timeElapsed++; //Start time elapsed timer
 
     speedUpTimer++;
-    
-    //speedIncreaseText();
 
     text2Contents =
       "You died. \n You survived " +
@@ -558,7 +601,7 @@ function draw() {
         uncomingCarHeight
       );
 
-      uncomingCarX = uncomingCarX - pixelScale * 4;
+      uncomingCarX = uncomingCarX - movementScale * 4;
     }
 
     if (timeRunning2 === uncomingSemiAppear) {
@@ -572,7 +615,7 @@ function draw() {
         uncomingSemiHeight
       );
 
-      uncomingSemiX = uncomingSemiX - pixelScale * 4;
+      uncomingSemiX = uncomingSemiX - movementScale * 4;
     }
 
     if (timeRunning3 === oldSlowTruckAppear) {
@@ -586,7 +629,7 @@ function draw() {
         oldSlowTruckHeight
       );
 
-      oldSlowTruckX = oldSlowTruckX - pixelScale * 1;
+      oldSlowTruckX = oldSlowTruckX - movementScale * 1;
     }
 
     if (timeRunning4 === slowCarAppear) {
@@ -594,69 +637,8 @@ function draw() {
 
       image(slowCarImg, slowCarX, slowCarY, slowCarWidth, slowCarHeight);
 
-      slowCarX = slowCarX - pixelScale * 1;
+      slowCarX = slowCarX - movementScale * 1;
     }
-
-    /*while (speedUpTimer / 60 >= 100 && speedUpTimer / 60 <= 199) {
-      scrollSpeed = pixelScale * 4 * 1.05;
-
-      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.05;
-
-      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.05;
-
-      slowCarX = slowCarX - pixelScale * 1 * 1.05;
-
-      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.05;
-    }
-
-    while (speedUpTimer / 60 >= 200 && speedUpTimer / 60 <= 299) {
-      scrollSpeed = pixelScale * 4 * 1.1;
-
-      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.1;
-
-      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.1;
-
-      slowCarX = slowCarX - pixelScale * 1 * 1.1;
-
-      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.1;
-    }
-
-    while (speedUpTimer / 60 >= 300 && speedUpTimer / 60 <= 399) {
-      scrollSpeed = pixelScale * 4 * 1.15;
-
-      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.15;
-
-      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.15;
-
-      slowCarX = slowCarX - pixelScale * 1 * 1.15;
-
-      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.15;
-    }
-
-    while (speedUpTimer / 60 >= 400 && speedUpTimer / 60 <= 499) {
-      scrollSpeed = pixelScale * 4 * 1.2;
-
-      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.2;
-
-      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.2;
-
-      slowCarX = slowCarX - pixelScale * 1 * 1.2;
-
-      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.2;
-    }
-
-    while (speedUpTimer / 60 >= 500 && speedUpTimer / 60 <= 599) {
-      scrollSpeed = pixelScale * 4 * 1.25;
-
-      uncomingCarX = uncomingCarX - pixelScale * 4 * 1.25;
-
-      uncomingSemiX = uncomingSemiX - pixelScale * 4 * 1.25;
-
-      slowCarX = slowCarX - pixelScale * 1 * 1.25;
-
-      oldSlowTruckX = oldSlowTruckX - pixelScale * 1 * 1.25;
-    }
-    */
 
     /*If the controlled green luxury car hits another vehicle, game over, commence post death
      *sequence
@@ -814,31 +796,31 @@ function keyPressed() {
 
 //Snowflake class
 function snowflake() {
-    //Initialize coordinates
-    this.posX = 0;
-    this.posY = random(-50, 0);
-    this.initialangle = random(0, 2 * PI);
-    this.size = random(snowflakeMinRadius, snowflakeMaxRadius);
+  //Initialize coordinates
+  this.posX = 0;
+  this.posY = random(-50, 0);
+  this.initialangle = random(0, 2 * PI);
+  this.size = random(snowflakeMinRadius, snowflakeMaxRadius);
 
-    //Radius of snowflake spiral
-    //Chosen so the snowflakes are uniformly spread out in area
-    this.radius = sqrt(random(pow(width / 2, 2)));
+  //Radius of snowflake spiral
+  //Chosen so the snowflakes are uniformly spread out in area
+  this.radius = sqrt(random(pow(width / 2, 2)));
 
-    this.update = function (time) {
-      //X-position follows a circle
-      let w = 0.6; //Angular speed
-      let angle = w * time + this.initialangle;
-      this.posX = width / 2 + this.radius * sin(angle);
+  this.update = function (time) {
+    //X-position follows a circle
+    let w = 0.6; //Angular speed
+    let angle = w * time + this.initialangle;
+    this.posX = width / 2 + this.radius * sin(angle);
 
-      //Different size snowflakes fall at slightly different y speeds
-      this.posY += pow(this.size, pixelScale * 0.5);
+    //Different size snowflakes fall at slightly different y speeds
+    this.posY += pow(this.size, pixelScale * 0.5);
 
-      //Delete snowflake if past end of screen
-      if (this.posY > height) {
-        let index = snowflakes.indexOf(this);
-        snowflakes.splice(index, 1);
-      }
-    };
+    //Delete snowflake if past end of screen
+    if (this.posY > height) {
+      let index = snowflakes.indexOf(this);
+      snowflakes.splice(index, 1);
+    }
+  };
   fill("white");
 
   this.display = function () {
@@ -846,56 +828,83 @@ function snowflake() {
   };
 }
 
+function centerCanvas() {
+  canvasX = (windowWidth - width) / 2;
+  canvasY = (windowHeight - height) / 1.5;
+  winterGetawayCanvas.position(canvasX, canvasY);
+}
+
+function windowResized() {
+  pauseGame();
+
+  windowResizedCounter++;
+
+  if (windowResizedCounter === 1) {
+    windowResizedText();
+  }
+}
+
 function pauseGame() {
   startGameNumber = 2;
 
-  keyPressedIntializationNumber = 0;
+  keyPressedIntializationNumber = 1;
 }
 
 function startGame() {
   keyPressedIntializationNumber = 0;
 
   startGameNumber = 1;
-  
-  //speedIncreaseText();
+
+  windowResizedCounter = 0;
 }
 
 function restartGame() {
-  keyPressedIntializationNumber = 0;
+  if (windowResizedCounter === 0) {
+    keyPressedIntializationNumber = 0;
 
-  snowflakePhase = 2;
+    snowflakePhase = 2;
 
-  //Rectangle to make snowflakes disappear
-  fill("grey");
-  rect(0, pixelScale * 162, width, pixelScale * 8);
+    //Rectangle to make snowflakes disappear
+    fill("grey");
+    rect(0, pixelScale * 162, width, pixelScale * 8);
 
-  uncomingCarX = random(uncomingCarXOptions);
-  uncomingSemiX = random(uncomingSemiXOptions);
-  oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
-  slowCarX = floor(random(slowCarXMin, slowCarXMax));
+    uncomingCarX = random(uncomingCarXOptions);
+    uncomingSemiX = random(uncomingSemiXOptions);
+    oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
+    slowCarX = floor(random(slowCarXMin, slowCarXMax));
 
-  timeRunning = 0;
-  timeRunning2 = 0;
-  timeRunning3 = 0;
-  timeRunning4 = 0;
-  timeRunningTotal = 0;
+    timeRunning = 0;
+    timeRunning2 = 0;
+    timeRunning3 = 0;
+    timeRunning4 = 0;
+    timeRunningTotal = 0;
 
-  timeElapsed = 0;
-  speedUpTimer = 0;
+    timeElapsed = 0;
+    speedUpTimer = 0;
 
-  image(bgImg, x1, 0, width, pixelScale * 162);
-  image(bgImg, x2, 0, width, pixelScale * 162);
+    image(bgImg, x1, 0, width, pixelScale * 162);
+    image(bgImg, x2, 0, width, pixelScale * 162);
 
-  image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
-  image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
+    image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
+    image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
 
-  carImgY = carImgYPosition1;
+    carImgY = carImgYPosition1;
 
-  image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+    image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
 
-  startGameNumber = 2;
+    startGameNumber = 2;
 
-  timerText();
+    timerText();
+
+    circleRadius = 0;
+
+    easyMode();
+
+    if (this.posY < height) {
+      let index = snowflakes.indexOf(this);
+      snowflakes.splice(0, 1);
+    }
+  }
 }
 
 //Function for the time elapsed text in the top right corner
@@ -942,10 +951,10 @@ function postDeathSequence() {
 
   x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
   x2 += scrollSpeed;
-  uncomingCarX = uncomingCarX + pixelScale * 4; //Cancel out the vehicle movements, stopping them from moving
-  uncomingSemiX = uncomingSemiX + pixelScale * 4;
-  oldSlowTruckX = oldSlowTruckX + pixelScale * 1;
-  slowCarX = slowCarX + pixelScale * 1;
+  uncomingCarX = uncomingCarX + movementScale * 4; //Cancel out the vehicle movements, stopping them from moving
+  uncomingSemiX = uncomingSemiX + movementScale * 4;
+  oldSlowTruckX = oldSlowTruckX + movementScale * 1;
+  slowCarX = slowCarX + movementScale * 1;
   circleY = height / 2;
   circleX = width / 2;
   explosion();
@@ -975,28 +984,134 @@ function postDeathText() {
 }
 
 function speedIncreaseText() {
-  text3X = width / 2;
-  text3Y = height / 2;
-  text3Width = width / 2;
-  text3Height = height/ 2;
-  
-  speedIncreaseTextSize = pixelScale * 7;
-  
-  text3Contents = "Speed Increase >>>";
-  
+  text3X = 0;
+  text3Y = 0;
+  text3Width = width;
+  text3Height = height;
+
+  speedIncreaseTextSize = pixelScale * 8;
+
+  text3Contents = "Speed Increase in " + timeToSpeedIncrease;
+
   fill("white");
   textFont("Helvetica");
   textSize(speedIncreaseTextSize);
-  textAlign(LEFT, TOP);
+  textAlign(CENTER, CENTER);
   text(text3Contents, text3X, text3Y, text3Width, text3Height);
 }
 
-function centerCanvas() {
-  canvasX = (windowWidth - width) / 2;
-  canvasY = (windowHeight - height) / 1.5;
-  winterGetawayCanvas.position(canvasX, canvasY);
+function windowResizedText() {
+  text4X = 0;
+  text4Y = 0;
+  text4Width = width;
+  text4Height = height;
+
+  windowResizedTextSize = pixelScale * 10;
+
+  text4Contents =
+    "The browser was resized \n Readjust the browser size to fit the game \n Alternatively, refresh the page to automitcally resize the game";
+
+  fill("red");
+  textFont("Helvetica");
+  textSize(speedIncreaseTextSize);
+  textAlign(CENTER, TOP);
+  text(text4Contents, text4X, text4Y, text4Width, text4Height);
 }
 
-function windowResized() {
-  pauseGame();
+/*function difficultyText() {
+  text5Contents = "Difficulty: " + difficulty;
+
+  var difficultyTextWidth = width;
+
+  var difficultyTextHeight = height;
+
+  var difficultyTextX = 0;
+
+  var difficultyTextY = 0 - pixelScale * 8;
+
+  var difficultyTextFontSize = pixelScale * 15;
+
+  fill("white");
+  textFont("Helvetica");
+  textSize(difficultyTextFontSize);
+  textAlign(RIGHT, BOTTOM);
+  text(
+    text5Contents,
+    difficultyTextX,
+    difficultyTextY,
+    difficultyTextWidth,
+    difficultyTextHeight
+  );
+}
+*/
+
+/*function backgroundRectangle() {
+  var backgroundRectangleWidth = windowWidth * 0.11;
+  var backgroundRectangleHeight = windowHeight * 0.04;
+
+  var backgroundRectangleX = width - backgroundRectangleWidth;
+  var backgroundRectangleY = height - backgroundRectangleHeight;
+
+  fill("black");
+  rect(
+    backgroundRectangleX,
+    backgroundRectangleY,
+    backgroundRectangleWidth,
+    backgroundRectangleHeight
+  );
+}
+*/
+
+function easyMode() {
+  movementScale = windowHeight * 0.0012;
+  scrollSpeed = pixelScale * 4;
+
+  difficulty = "Easy";
+
+  speedModeNumber = 1;
+
+  easyModeButton.removeAttribute("color");
+  easyModeButton.style("color", "black");
+
+  mediumModeButton.removeAttribute("color");
+  mediumModeButton.style("color", "white");
+
+  hardModeButton.removeAttribute("color");
+  hardModeButton.style("color", "white");
+}
+
+function mediumMode() {
+  movementScale = windowHeight * 0.0015;
+  scrollSpeed = pixelScale * 5;
+
+  difficulty = "Medium";
+
+  speedModeNumber = 2;
+
+  easyModeButton.removeAttribute("color");
+  easyModeButton.style("color", "white");
+
+  mediumModeButton.removeAttribute("color");
+  mediumModeButton.style("color", "black");
+
+  hardModeButton.removeAttribute("color");
+  hardModeButton.style("color", "white");
+}
+
+function hardMode() {
+  movementScale = windowHeight * 0.0018;
+  scrollSpeed = pixelScale * 6;
+
+  difficulty = "Hard";
+
+  speedModeNumber = 3;
+
+  easyModeButton.removeAttribute("color");
+  easyModeButton.style("color", "white");
+
+  mediumModeButton.removeAttribute("color");
+  mediumModeButton.style("color", "white");
+
+  hardModeButton.removeAttribute("color");
+  hardModeButton.style("color", "black");
 }
