@@ -203,6 +203,18 @@ var difficulty = "Easy";
 
 var speedModeNumber;
 
+var victoryRoadImg;
+
+var victoryRoadX;
+var victoryRoadY;
+var victoryRoadWidth;
+var victoryRoadHeight;
+
+let confettiColor = [],
+  confetti = [];
+
+var snowflakeTimer = 0;
+
 //Preload images so that they are ready when the game begins
 function preload() {
   bgImg = loadImage("winter-Getaway/winter-Getaway-Images/moving-Road.jpeg");
@@ -222,6 +234,10 @@ function preload() {
   );
 
   slowCarImg = loadImage("winter-Getaway/winter-Getaway-Images/slow-Car.png");
+
+  victoryRoadImg = loadImage(
+    "winter-Getaway/winter-Getaway-Images/victory-Road.jpg"
+  );
 }
 
 function setup() {
@@ -237,6 +253,15 @@ function setup() {
   movementScale = windowHeight * 0.0012;
 
   scrollSpeed = pixelScale * 4;
+
+  confettiColor = [color("#00aeef"), color("#ec008c"), color("#72c8b6")];
+  for (let i = 0; i < 100; i++) {
+    confetti[i] = new Confetti(
+      random(0, width),
+      random(-height, 0),
+      random(-1, 1)
+    );
+  }
 
   carImgYPosition1 = pixelScale * -2;
   carImgYPosition2 = pixelScale * 81;
@@ -289,6 +314,11 @@ function setup() {
 
   snowflakeMinRadius = pixelScale * 2;
   snowflakeMaxRadius = pixelScale * 5;
+
+  victoryRoadX = width;
+  victoryRoadY = 0;
+  victoryRoadWidth = width;
+  victoryRoadHeight = height;
 
   frameRate(60); //Set frame rate to 60 frames per second
 
@@ -385,7 +415,7 @@ function setup() {
 
   startGameButtonColor = "#3f93dfff";
   startGameButtonX = windowWidth * 0.205;
-  startGameButtonY = canvasY + windowHeight * 0.3998;
+  startGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.3998;
 
   startGameButton = createButton("Start/Resume Game");
   startGameButton.mouseClicked(startGame);
@@ -396,7 +426,7 @@ function setup() {
 
   pauseGameButtonColor = "#3f93dfff";
   pauseGameButtonX = windowWidth * 0.475;
-  pauseGameButtonY = canvasY + windowHeight * 0.3998;
+  pauseGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.3998;
 
   pauseGameButton = createButton("Pause Game");
   pauseGameButton.mouseClicked(pauseGame);
@@ -407,7 +437,7 @@ function setup() {
 
   restartGameButtonColor = "#3f93dfff";
   restartGameButtonX = windowWidth * 0.7275;
-  restartGameButtonY = canvasY + windowHeight * 0.3998;
+  restartGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.3998;
 
   restartGameButton = createButton("Restart Game");
   restartGameButton.mouseClicked(restartGame);
@@ -460,10 +490,12 @@ function draw() {
 
     speedUpTimer++;
 
+    snowflakeTimer++;
+
     text2Contents =
       "You died. \n You survived " +
       round(timeElapsed / 60) +
-      " seconds. \n Press the play button to start another round.";
+      " seconds. \n Press the reset button to initiate another round.";
 
     image(bgImg, x1, 0, width, pixelScale * 162);
     image(bgImg, x2, 0, width, pixelScale * 162);
@@ -710,39 +742,31 @@ function draw() {
     /*For loop to make 40 vehicles of each type appear one after another
      *Y and x coordinates are random each time for each vehicle
      */
-    for (let i = 0; i < 40; i++) {
-      if (oldSlowTruckX <= pixelScale * -300) {
-        oldSlowTruckY = random(oldSlowTruckY2Options);
-        oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
-      }
+    if (oldSlowTruckX <= pixelScale * -300) {
+      oldSlowTruckY = random(oldSlowTruckY2Options);
+      oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
     }
 
-    for (let i = 0; i < 40; i++) {
-      if (uncomingCarX <= pixelScale * -290) {
-        uncomingCarY = random(uncomingCarY2Options);
-        uncomingCarX = uncomingCarX2;
-      }
+    if (uncomingCarX <= pixelScale * -290) {
+      uncomingCarY = random(uncomingCarY2Options);
+      uncomingCarX = uncomingCarX2;
     }
 
-    for (let i = 0; i < 10; i++) {
-      if (uncomingSemiX <= pixelScale * -550) {
-        uncomingSemiY = random(uncomingSemiY2Options);
-        uncomingSemiX = uncomingSemiX2;
-      }
+    if (uncomingSemiX <= pixelScale * -550) {
+      uncomingSemiY = random(uncomingSemiY2Options);
+      uncomingSemiX = uncomingSemiX2;
     }
 
-    for (let i = 0; i < 10; i++) {
-      if (slowCarX <= pixelScale * -296) {
-        slowCarY = random(slowCarY2Options);
-        slowCarX = floor(random(slowCarXMin, slowCarXMax));
-      }
+    if (slowCarX <= pixelScale * -296) {
+      slowCarY = random(slowCarY2Options);
+      slowCarX = floor(random(slowCarXMin, slowCarXMax));
     }
 
     //Rectangle to make divider between highways
     fill("grey");
     rect(0, pixelScale * 162, width, pixelScale * 8);
 
-    if (startGameNumber === 1) {
+    if (startGameNumber === 1 && round(snowflakeTimer / 60) >= 2) {
       let t = frameCount / 60; //Update time
 
       //Create a random number of snowflakes each frame
@@ -758,6 +782,72 @@ function draw() {
     }
 
     timerText();
+
+    if (timeElapsed / 60 >= 15) {
+      if (uncomingCarX > width) {
+        uncomingCarX = uncomingCarX + movementScale * 4;
+      }
+      if (uncomingSemiX > width) {
+        uncomingSemiX = uncomingSemiX + movementScale * 4;
+      }
+      if (oldSlowTruckX > width) {
+        oldSlowTruckX = oldSlowTruckX + movementScale * 1;
+      }
+      if (slowCarX > width) {
+        slowCarX = slowCarX + movementScale * 1;
+      }
+    }
+  }
+
+  if (timeElapsed / 60 >= 30) {
+    image(
+      victoryRoadImg,
+      victoryRoadX,
+      victoryRoadY,
+      victoryRoadWidth,
+      victoryRoadHeight
+    );
+
+    if (victoryRoadX > 0) {
+      victoryRoadX -= scrollSpeed;
+    }
+
+    image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+
+    if (victoryRoadX <= 0) {
+      
+      victoryText();
+      
+      victoryRoadX = victoryRoadX;
+
+      image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+
+      pauseGame();
+
+      for (let i = 0; i < confetti.length / 2; i++) {
+        confetti[i].confettiDisplay();
+
+        if (confetti[i].y > height) {
+          confetti[i] = new Confetti(
+            random(0, width),
+            random(-height, 0),
+            random(-1, 1)
+          );
+        }
+      }
+
+      for (let i = int(confetti.length / 2); i < confetti.length; i++) {
+        confetti[i].confettiDisplay();
+
+        if (confetti[i].y > height) {
+          confetti[i] = new Confetti(
+            random(0, width),
+            random(-height, 0),
+            random(-1, 1)
+          );
+        }
+      }
+    }
   }
 }
 
@@ -862,7 +952,7 @@ function restartGame() {
   if (windowResizedCounter === 0) {
     keyPressedIntializationNumber = 0;
 
-    snowflakePhase = 2;
+    snowflakeTimer = 0;
 
     //Rectangle to make snowflakes disappear
     fill("grey");
@@ -899,6 +989,8 @@ function restartGame() {
     circleRadius = 0;
 
     easyMode();
+
+    victoryRoadX = width;
 
     if (this.posY < height) {
       let index = snowflakes.indexOf(this);
@@ -1009,7 +1101,7 @@ function windowResizedText() {
   windowResizedTextSize = pixelScale * 10;
 
   text4Contents =
-    "The browser was resized \n Readjust the browser size to fit the game \n Alternatively, refresh the page to automitcally resize the game";
+    "The browser was resized \n Readjust the browser size to fit the game \n Alternatively, refresh the page to automatically resize the game";
 
   fill("red");
   textFont("Helvetica");
@@ -1017,50 +1109,6 @@ function windowResizedText() {
   textAlign(CENTER, TOP);
   text(text4Contents, text4X, text4Y, text4Width, text4Height);
 }
-
-/*function difficultyText() {
-  text5Contents = "Difficulty: " + difficulty;
-
-  var difficultyTextWidth = width;
-
-  var difficultyTextHeight = height;
-
-  var difficultyTextX = 0;
-
-  var difficultyTextY = 0 - pixelScale * 8;
-
-  var difficultyTextFontSize = pixelScale * 15;
-
-  fill("white");
-  textFont("Helvetica");
-  textSize(difficultyTextFontSize);
-  textAlign(RIGHT, BOTTOM);
-  text(
-    text5Contents,
-    difficultyTextX,
-    difficultyTextY,
-    difficultyTextWidth,
-    difficultyTextHeight
-  );
-}
-*/
-
-/*function backgroundRectangle() {
-  var backgroundRectangleWidth = windowWidth * 0.11;
-  var backgroundRectangleHeight = windowHeight * 0.04;
-
-  var backgroundRectangleX = width - backgroundRectangleWidth;
-  var backgroundRectangleY = height - backgroundRectangleHeight;
-
-  fill("black");
-  rect(
-    backgroundRectangleX,
-    backgroundRectangleY,
-    backgroundRectangleWidth,
-    backgroundRectangleHeight
-  );
-}
-*/
 
 function easyMode() {
   movementScale = windowHeight * 0.0012;
@@ -1114,4 +1162,67 @@ function hardMode() {
 
   hardModeButton.removeAttribute("color");
   hardModeButton.style("color", "black");
+}
+
+class Confetti {
+  constructor(_x, _y, _s) {
+    this.x = _x;
+    this.y = _y;
+    this.speed = _s;
+    this.time = random(0, 100);
+    this.color = random(confettiColor);
+    this.amp = random(2, 30);
+    this.phase = random(0.5, 2);
+    this.size = random(height / 12, height / 50);
+    this.form = round(random(0, 1));
+  }
+
+  confettiDisplay() {
+    fill(this.color);
+    // blendMode(SCREEN);
+    noStroke();
+    push();
+    translate(this.x, this.y);
+    translate(
+      this.amp * sin(this.time * this.phase),
+      this.speed * cos(2 * this.time * this.phase)
+    );
+    rotate(this.time);
+    rectMode(CENTER);
+    scale(cos(this.time / 4), sin(this.time / 4));
+    if (this.form === 0) {
+      rect(0, 0, this.size, this.size / 2);
+    } else {
+      ellipse(0, 0, this.size);
+    }
+    pop();
+
+    this.time = this.time + 0.1;
+
+    this.speed += 1 / 200;
+
+    this.y += this.speed;
+  }
+}
+
+function victoryText() {
+  var victoryTextX = 0;
+  var victoryTextY = 0;
+  
+  var victoryTextWidth = width;
+  var victoryTextHeight = height;
+  
+  var victoryTextSize = pixelScale * 20;
+  
+  var victoryTextStrokeWeight = pixelScale * 2;
+  
+  var victoryTextContents = "You have escaped. The police are off your tail. Enjoy your well-deserved confetti";
+  
+  fill("#0086FF");
+  strokeWeight(victoryTextStrokeWeight);
+  stroke("grey");
+  textFont("Helvetica");
+  textSize(victoryTextSize);
+  textAlign(CENTER, CENTER);
+  text(victoryTextContents, victoryTextX, victoryTextY, victoryTextWidth, victoryTextHeight);
 }
