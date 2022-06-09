@@ -210,8 +210,7 @@ var victoryRoadY;
 var victoryRoadWidth;
 var victoryRoadHeight;
 
-let confettiColor = [],
-  confetti = [];
+let confettiColor = [], confetti = [];
 
 var snowflakeTimer = 0;
 
@@ -815,9 +814,8 @@ function draw() {
     image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
 
     if (victoryRoadX <= 0) {
-      
       victoryText();
-      
+
       victoryRoadX = victoryRoadX;
 
       image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
@@ -1208,21 +1206,28 @@ class Confetti {
 function victoryText() {
   var victoryTextX = 0;
   var victoryTextY = 0;
-  
+
   var victoryTextWidth = width;
   var victoryTextHeight = height;
-  
+
   var victoryTextSize = pixelScale * 20;
-  
+
   var victoryTextStrokeWeight = pixelScale * 2;
-  
-  var victoryTextContents = "You have escaped. The police are off your tail. Enjoy your well-deserved confetti";
-  
+
+  var victoryTextContents =
+    "You have escaped. The police are off your tail. Enjoy your well-deserved confetti";
+
   fill("#0086FF");
   strokeWeight(victoryTextStrokeWeight);
   stroke("grey");
   textFont("Helvetica");
   textSize(victoryTextSize);
   textAlign(CENTER, CENTER);
-  text(victoryTextContents, victoryTextX, victoryTextY, victoryTextWidth, victoryTextHeight);
+  text(
+    victoryTextContents,
+    victoryTextX,
+    victoryTextY,
+    victoryTextWidth,
+    victoryTextHeight
+  );
 }
