@@ -210,9 +210,18 @@ var victoryRoadY;
 var victoryRoadWidth;
 var victoryRoadHeight;
 
-let confettiColor = [], confetti = [];
+let confettiColor = [],
+  confetti = [];
 
 var snowflakeTimer = 0;
+
+var escapeMusic;
+var postDeathSound;
+var victoryMusic;
+
+var postDeathSoundPlayAmount = 0;
+
+var victoryMusicPlayAmount = 0;
 
 //Preload images so that they are ready when the game begins
 function preload() {
@@ -236,6 +245,18 @@ function preload() {
 
   victoryRoadImg = loadImage(
     "winter-Getaway/winter-Getaway-Images/victory-Road.jpg"
+  );
+
+  escapeMusic = loadSound(
+    "winter-Getaway/winter-Getaway-Sounds/escape-Music.mp3"
+  );
+
+  postDeathSound = loadSound(
+    "winter-Getaway/winter-Getaway-Sounds/post-Death-Sound.mp3"
+  );
+
+  victoryMusic = loadSound(
+    "winter-Getaway/winter-Getaway-Sounds/victory-Music.mp3"
   );
 }
 
@@ -414,7 +435,7 @@ function setup() {
 
   startGameButtonColor = "#3f93dfff";
   startGameButtonX = windowWidth * 0.205;
-  startGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.3998;
+  startGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.4075;
 
   startGameButton = createButton("Start/Resume Game");
   startGameButton.mouseClicked(startGame);
@@ -425,7 +446,7 @@ function setup() {
 
   pauseGameButtonColor = "#3f93dfff";
   pauseGameButtonX = windowWidth * 0.475;
-  pauseGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.3998;
+  pauseGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.4075;
 
   pauseGameButton = createButton("Pause Game");
   pauseGameButton.mouseClicked(pauseGame);
@@ -436,7 +457,7 @@ function setup() {
 
   restartGameButtonColor = "#3f93dfff";
   restartGameButtonX = windowWidth * 0.7275;
-  restartGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.3998;
+  restartGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.4075;
 
   restartGameButton = createButton("Restart Game");
   restartGameButton.mouseClicked(restartGame);
@@ -765,7 +786,7 @@ function draw() {
     fill("grey");
     rect(0, pixelScale * 162, width, pixelScale * 8);
 
-    if (startGameNumber === 1 && round(snowflakeTimer / 60) >= 2) {
+    if (startGameNumber === 1 && snowflakeTimer / 60 >= 2) {
       let t = frameCount / 60; //Update time
 
       //Create a random number of snowflakes each frame
@@ -782,7 +803,7 @@ function draw() {
 
     timerText();
 
-    if (timeElapsed / 60 >= 15) {
+    if (timeElapsed / 60 >= 285) {
       if (uncomingCarX > width) {
         uncomingCarX = uncomingCarX + movementScale * 4;
       }
@@ -798,7 +819,7 @@ function draw() {
     }
   }
 
-  if (timeElapsed / 60 >= 30) {
+  if (timeElapsed / 60 >= 300) {
     image(
       victoryRoadImg,
       victoryRoadX,
@@ -821,6 +842,11 @@ function draw() {
       image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
 
       pauseGame();
+      
+      if (victoryMusicPlayAmount === 0) {
+      victoryMusic.play();
+      victoryMusicPlayAmount = 1;
+      }
 
       for (let i = 0; i < confetti.length / 2; i++) {
         confetti[i].confettiDisplay();
@@ -936,6 +962,10 @@ function pauseGame() {
   startGameNumber = 2;
 
   keyPressedIntializationNumber = 1;
+
+  escapeMusic.pause();
+
+  postDeathSound.stop();
 }
 
 function startGame() {
@@ -944,6 +974,8 @@ function startGame() {
   startGameNumber = 1;
 
   windowResizedCounter = 0;
+
+  escapeMusic.play();
 }
 
 function restartGame() {
@@ -989,6 +1021,16 @@ function restartGame() {
     easyMode();
 
     victoryRoadX = width;
+
+    escapeMusic.stop();
+
+    postDeathSound.stop();
+
+    victoryMusic.stop();
+    
+    postDeathSoundPlayAmount = 0;
+    
+    victoryMusicPlayAmount = 0;
 
     if (this.posY < height) {
       let index = snowflakes.indexOf(this);
@@ -1037,8 +1079,14 @@ function explosion() {
 function postDeathSequence() {
   keyPressedIntializationNumber = 1;
 
-  postDeathSequenceCounter++;
+  escapeMusic.stop();
 
+  victoryMusic.stop();
+
+  if (postDeathSoundPlayAmount === 0) {
+    postDeathSound.play();
+    postDeathSoundPlayAmount = 1;
+  }
   x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
   x2 += scrollSpeed;
   uncomingCarX = uncomingCarX + movementScale * 4; //Cancel out the vehicle movements, stopping them from moving
@@ -1112,8 +1160,6 @@ function easyMode() {
   movementScale = windowHeight * 0.0012;
   scrollSpeed = pixelScale * 4;
 
-  difficulty = "Easy";
-
   speedModeNumber = 1;
 
   easyModeButton.removeAttribute("color");
@@ -1130,8 +1176,6 @@ function mediumMode() {
   movementScale = windowHeight * 0.0015;
   scrollSpeed = pixelScale * 5;
 
-  difficulty = "Medium";
-
   speedModeNumber = 2;
 
   easyModeButton.removeAttribute("color");
@@ -1147,8 +1191,6 @@ function mediumMode() {
 function hardMode() {
   movementScale = windowHeight * 0.0018;
   scrollSpeed = pixelScale * 6;
-
-  difficulty = "Hard";
 
   speedModeNumber = 3;
 
