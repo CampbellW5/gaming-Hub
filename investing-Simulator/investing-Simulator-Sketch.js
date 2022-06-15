@@ -202,7 +202,7 @@ function setup() {
   buyButton.style("font-size", "1vw");
   buyButton.style("font-family", "Trebuchet MS");
   buyButton.style("background-color", buyButtonColor);
-  buyButton.style("color", "#3f93dfff");
+  buyButton.style("color", "#3f93df");
   buyButton.size(buyButtonSize);
   buyButton.position(buyButtonX, buyButtonY);
 
@@ -216,7 +216,7 @@ function setup() {
   sellButton.style("font-size", "1vw");
   sellButton.style("font-family", "Trebuchet MS");
   sellButton.style("background-color", sellButtonColor);
-  sellButton.style("color", "#3f93dfff");
+  sellButton.style("color", "#3f93df");
   sellButton.size(sellButtonSize);
   sellButton.position(sellButtonX, sellButtonY);
 
@@ -227,7 +227,7 @@ function setup() {
   amountInput = createInput("");
   amountInput.style("font-size", "1vw");
   amountInput.style("font-family", "Trebuchet MS");
-  amountInput.style("background-color", "#3f93dfff");
+  amountInput.style("background-color", "#3f93df");
   amountInput.style("color", "white");
   amountInput.size(amountInputSize);
   amountInput.position(amountInputX, amountInputY);
@@ -242,7 +242,7 @@ function setup() {
   submitButton.style("font-size", "1vw");
   submitButton.style("font-family", "Trebuchet MS");
   submitButton.style("background-color", submitButtonColor);
-  submitButton.style("color", "#3f93dfff");
+  submitButton.style("color", "#3f93df");
   submitButton.size(submitButtonSize);
   submitButton.position(submitButtonX, submitButtonY);
 
@@ -447,7 +447,7 @@ function blueRectangle() {
 
   noStroke();
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   rect(
     blueRectangleX,
     blueRectangleY,
@@ -467,7 +467,7 @@ function newsStory1() {
   newsStory1Contents =
     "Automatic Hand Washer Systems (AHW) has released their quarterly earnings. The figure is significantly lower than experts had predicted.";
 
-  fill("#3f93dfff");
+  fill("#3f93dff");
   textFont("Trebuchet MS");
   textSize(newsStory1TextSize);
   textAlign(CENTER);
@@ -491,7 +491,7 @@ function newsStory2() {
   newsStory2Contents =
     "Michael Moon, the CEO of AHW, is facing a harsh lawsuit. AHW's price per share will drop in response.";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory2TextSize);
   textAlign(CENTER);
@@ -515,7 +515,7 @@ function newsStory3() {
   newsStory3Contents =
     "Automatic Hand Washing Systems announced a new product line for the summer of 2022. Experts are excited about the potential of this line.";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory3TextSize);
   textAlign(CENTER);
@@ -539,7 +539,7 @@ function newsStory4() {
   newsStory4Contents =
     "Automatic Hand Washing Systems recalled one of their products for hygiene issues";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory4TextSize);
   textAlign(CENTER);
@@ -563,7 +563,7 @@ function newsStory5() {
   newsStory5Contents =
     "Hyatt Hotels Corporation (H) agreed to install the Automatic Hand Washer inside their hotel rooms";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory5TextSize);
   textAlign(CENTER);
@@ -587,7 +587,7 @@ function newsStory6() {
   newsStory6Contents =
     "Automatic Hand Washing Systems has been praised by the CDC";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory6TextSize);
   textAlign(CENTER);
@@ -611,7 +611,7 @@ function newsStory7() {
   newsStory7Contents =
     "Rumours are circulating that Dyson attempted to purchase AHW; however, AHW told Dyson to take a walk";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory7TextSize);
   textAlign(CENTER);
@@ -635,7 +635,7 @@ function newsStory8() {
   newsStory8Contents =
     "Automatic Hand Washing Systems revamped their best selling product. The improvement was expensive, yet the early returns are promising.";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory8TextSize);
   textAlign(CENTER);
@@ -659,7 +659,7 @@ function newsStory9() {
   newsStory9Contents =
     "The S&P 500 is down collectivly. AHW stock prices have yet to react.";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory9TextSize);
   textAlign(CENTER);
@@ -683,7 +683,7 @@ function newsStory10() {
   newsStory10Contents =
     "The recession continues. The future looks bleak, yet it is a poor time to sell.";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(newsStory10TextSize);
   textAlign(CENTER);
@@ -772,7 +772,7 @@ function tooExpensiveText() {
     amountInput.value() +
     " shares";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(tooExpensiveTextSize);
   textAlign(LEFT);
@@ -798,7 +798,7 @@ function tooManySharesText() {
     amountInput.value() +
     " shares";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(tooManySharesTextSize);
   textAlign(LEFT);
@@ -818,14 +818,14 @@ function buyStocks() {
   buyButton.style("color", "black");
 
   sellButton.removeAttribute("color");
-  sellButton.style("color", "#3f93dfff");
+  sellButton.style("color", "#3f93df");
 }
 
 function sellStocks() {
   buySellDeterminer = 2;
 
   buyButton.removeAttribute("color");
-  buyButton.style("color", "#3f93dfff");
+  buyButton.style("color", "#3f93df");
 
   sellButton.removeAttribute("color");
   sellButton.style("color", "black");
@@ -921,7 +921,7 @@ function priceChangeText() {
   priceChangeTextContents =
     "A price change occured. The original price per share was " + originalPricePerShare + " CAD. The new price per share is " + pricePerShare + " CAD.";
 
-  fill("#3f93dfff");
+  fill("#3f93df");
   textFont("Trebuchet MS");
   textSize(priceChangeTextSize);
   textAlign(CENTER);
