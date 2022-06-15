@@ -6,37 +6,182 @@ var investingSimulatorCanvasHeight;
 var investingSimulatorCanvasX;
 var investingSimulatorrCanvasY;
 
-var totalAmountCAD = 0;
-var timeToPriceChange = 7;
-
-var totalShares = 0;
-
 var buyButton;
+var buyButtonColor;
+var buyButtonX;
+var buyButtonY;
+var buyButtonSize;
+
 var sellButton;
+var sellButtonColor;
+var sellButtonX;
+var sellButtonY;
+var buyButtonSize;
 
 var amountInput;
-var submit;
+var amountInputX;
+var amountInputY;
+var amountInputSize;
 
+var submitButton;
+var submitButtonX;
+var submitButtonY;
+var submitButtonSize;
+
+var timeToPriceChange = 7;
+
+var totalAmountCAD = 0;
+var totalShares = 0;
 var spendingPower = 5000;
-
 var pricePerShare;
+var originalPricePerShare;
+
+var timeToPriceChangeTextX;
+var timeToPriceChangeTextY;
+var timeToPriceChangeTextWidth;
+var timeToPriceChangeTextHeight;
+var timeToPriceChangeTextSize;
+var timeToPriceChangeTextContents
+
+var totalAmountTextX;
+var totalAmountTextY;
+var totalAmountTextWidth;
+var totalAmountTextHeight;
+var totalAmountTextSize;
+var totalAmountTextContents;
+
+var sharesTextX;
+var sharesTextY;
+var sharesTextWidth;
+var sharesTextHeight;
+var sharesTextSize;
+var sharesTextContents;
+
+var spendingPowerTextX;
+var spendingPowerTextY;
+var spendingPowerTextWidth;
+var spendingPowerTextHeight;
+var spendingPowerTextSize;
+var spendingPowerTextContents;
+
+var pricePerShareTextX;
+var pricePerShareTextY;
+var pricePerShareTextWidth;
+var pricePerShareTextextHeight;
+var pricePerShareTextSize;
+var pricePerShareTextContents;
+
+var whiteRectangleX;
+var whiteRectangleY;
+var whiteRectangleWidth;
+var whiteRectangleHeight;
+
+var blueRectangleX;
+var blueRectangleY;
+var blueRectangleWidth;
+var blueRectangleHeight;
 
 var newsStory1X;
 var newsStory1Y;
+var newsStory1Width;
+var newsStory1Height;
+var newsStory1TextSize;
+var newsStory1Contents;
+
+var newsStory2X;
+var newsStory2Y;
+var newsStory2Width;
+var newsStory2Height;
+var newsStory2TextSize;
+var newsStory2Contents;
+
+var newsStory3X;
+var newsStory3Y;
+var newsStory3Width;
+var newsStory3Height;
+var newsStory3TextSize;
+var newsStory3Contents;
+
+var newsStory4X;
+var newsStory4Y;
+var newsStory4Width;
+var newsStory4Height;
+var newsStory4TextSize;
+var newsStory4Contents;
+
+var newsStory5X;
+var newsStory5Y;
+var newsStory5Width;
+var newsStory5Height;
+var newsStory5TextSize;
+var newsStory5Contents;
+
+var newsStory6X;
+var newsStory6Y;
+var newsStory6Width;
+var newsStory6Height;
+var newsStory6TextSize;
+var newsStory6Contents;
+
+var newsStory7X;
+var newsStory7Y;
+var newsStory7Width;
+var newsStory7Height;
+var newsStory7TextSize;
+var newsStory7Contents;
+
+var newsStory8X;
+var newsStory8Y;
+var newsStory8Width;
+var newsStory8Height;
+var newsStory8TextSize;
+var newsStory8Contents;
+
+var newsStory9X;
+var newsStory9Y;
+var newsStory9Width;
+var newsStory9Height;
+var newsStory9TextSize;
+var newsStory9Contents;
+
+var newsStory10X;
+var newsStory10Y;
+var newsStory10Width;
+var newsStory10Height;
+var newsStory10TextSize;
+var newsStory10Contents;
+
+var tooExpensiveTextX;
+var tooExpensiveTextY;
+var tooExpensiveTextWidth;
+var tooExpensiveTextHeight;
+var tooExpensiveTextSize;
+var tooExpensiveTextContents;
+
+var tooManySharesTextX;
+var tooManySharesTextY;
+var tooManySharesTextWidth;
+var tooManySharesTextHeight;
+var tooManySharesTextSize;
+var tooManySharesTextContents;
+
+var priceChangeTextX;
+var priceChangeTextY;
+var priceChangeTextWidth;
+var priceChangeTextHeight;
+var priceChangeTextSize;
+var priceChangeTextContents;
 
 var timePassed = 0;
 
 var newsStoryNumber;
 
 var buySellDeterminer = 0;
+var priceChangeTextDeterminer = 0;
 
 var tooExpensiveTextNumber = 0;
 
 var sharePurchaseAmount = 0;
-
-var originalPricePerShare;
-
-var priceChangeTextDeterminer = 0;
 
 function setup() {
   investingSimulatorCanvasWidth = windowWidth / 2;
