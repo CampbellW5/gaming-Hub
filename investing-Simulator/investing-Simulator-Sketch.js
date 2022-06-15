@@ -118,7 +118,7 @@ function setup() {
 function draw() {
   centerCanvas();
 
-  background("#3f93dfff");
+  blueRectangle();
   whiteRectangle();
 
   totalAmountText();
@@ -285,7 +285,7 @@ function whiteRectangle() {
 
   noStroke();
 
-  fill("white");
+  fill("#fcfcfc");
   rect(
     whiteRectangleX,
     whiteRectangleY,
@@ -294,7 +294,22 @@ function whiteRectangle() {
   );
 }
 
-function hardMode() {}
+function blueRectangle() {
+  blueRectangleX = 0;
+  blueRectangleY = 0;
+  blueRectangleWidth = width;
+  blueRectangleHeight = windowWidth * 0.05;
+
+  noStroke();
+
+  fill("#3f93dfff");
+  rect(
+    blueRectangleX,
+    blueRectangleY,
+    blueRectangleWidth,
+    blueRectangleHeight
+  );
+}
 
 function newsStory1() {
   newsStory1X = 0;
