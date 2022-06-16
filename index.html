@@ -70,10 +70,88 @@ a:link, a:visited {
 color: white;
 text-decoration: none;
 }
-
+        
 a:hover, a:active {
 color: black;
 text-decoration: none;
+}
+        
+a.body:link, a.body:visited, a.body:hover, a.body:active {
+color: #3f93dfff;
+text-decoration: none;
+}
+
+/* Class for the title of the page */
+h1 {
+position: absolute; 
+margin-left: auto;
+margin-right: auto;
+left: 0px;
+right: 0px;
+top: 7vw; 
+width: 100%; 
+height: auto; 
+text-align: center;
+z-index:950;
+font-size: 2.5vw;
+font-family: Verdana;
+color: white;
+}
+
+/* Classes for the title and image of each ranking preview */
+.investingSimulatorTitle {
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0px;
+right: 0px;
+top: 14vw;
+width: 100%;
+height: auto;
+text-align: center;
+z-index: 950;
+font-size: 1.25vw;
+font-family: Verdana;
+color: white;
+}
+
+.investingSimulatorPicture {
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0px;
+right: 0px;
+top: 18.5vw;
+text-align: center;
+z-index: 950;
+}
+
+.winterGetawayTitle {
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0px;
+right: 0px;
+top: 52vw;
+width: 100%;
+height: auto;
+text-align: center;
+z-index: 950;
+font-size: 1.25vw;
+font-family: Verdana;
+color: white;
+}
+
+.winterGetawayPicture {
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0px;
+right: 0px;
+top: 56.5vw;
+text-align: center;
+z-index: 950;
+}
 }
         
 .footer {
@@ -126,6 +204,31 @@ color: white;
            <img src='gaming-Hub-Logo.png' onmouseover="this.src='gaming-Hub-Logo-Inverted.png';" onmouseout="this.src='gaming-Hub-Logo.png';" alt="Gaming Hub Logo;" style="position: fixed; left: 22%; top: 1.4vw; width: 5.75vw; height: auto;">
                </a></p>
       </div>
+
+   
+<h1>Welcome to Gaming Hub</h1>
+
+<div class="investingSimulatorTitle">
+<h3><a class="body" href="investing-Simulator.html">Investing Simulator</a></h3>
+</div>
+
+
+<div class="investingSimulatorPicture">
+<a href="investing-Simulator.html">
+<img src="investing-Simulator-Preview.png" style="height:30vw; width:auto; border-radius: 20%;" alt="Investing Simulator Preview;">
+</a>
+</div>
+
+
+<div class="winterGetawayTitle">
+<h3><a class="body" href="winter-Getaway.html">Winter Getaway</a></h3>
+</div>
+
+<div class="winterGetawayPicture">
+<a href="winter-Getaway.html.html">
+<img src="winter-Getaway-Preview.png" style="height: 30vw; width: auto; border-radius: 20%;" alt="Winter Getaway Preview;">
+</a>
+</div>
         
       <div class="footer">
       </div>
