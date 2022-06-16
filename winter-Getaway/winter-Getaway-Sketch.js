@@ -1,4 +1,4 @@
-//Intialize variables and constants
+//Intialize variables
 let bgImg;
 var x1 = 0;
 var x2;
@@ -199,8 +199,6 @@ var easyModeButtonTextColor;
 var mediumModeButtonTextColor;
 var hardModeButtonTextColor;
 
-var difficulty = "Easy";
-
 var speedModeNumber;
 
 var victoryRoadImg;
@@ -222,6 +220,8 @@ var victoryMusic;
 var postDeathSoundPlayAmount = 0;
 
 var victoryMusicPlayAmount = 0;
+
+var escapeMusicPlayAmount = 0;
 
 //Preload images so that they are ready when the game begins
 function preload() {
@@ -966,6 +966,8 @@ function pauseGame() {
   escapeMusic.pause();
 
   postDeathSound.stop();
+  
+  escapeMusicPlayAmount = 0;
 }
 
 function startGame() {
@@ -975,7 +977,10 @@ function startGame() {
 
   windowResizedCounter = 0;
 
+  if (escapeMusicPlayAmount === 0) {
   escapeMusic.play();
+  escapeMusicPlayAmount = 1;
+  }
 }
 
 function restartGame() {
@@ -1031,6 +1036,8 @@ function restartGame() {
     postDeathSoundPlayAmount = 0;
     
     victoryMusicPlayAmount = 0;
+    
+    escapeMusicPlayAmount = 0;
 
     if (this.posY < height) {
       let index = snowflakes.indexOf(this);
@@ -1078,15 +1085,7 @@ function explosion() {
 //Function for the post death sequence
 function postDeathSequence() {
   keyPressedIntializationNumber = 1;
-
-  escapeMusic.stop();
-
-  victoryMusic.stop();
-
-  if (postDeathSoundPlayAmount === 0) {
-    postDeathSound.play();
-    postDeathSoundPlayAmount = 1;
-  }
+  
   x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
   x2 += scrollSpeed;
   uncomingCarX = uncomingCarX + movementScale * 4; //Cancel out the vehicle movements, stopping them from moving
@@ -1098,6 +1097,15 @@ function postDeathSequence() {
   explosion();
 
   timeElapsed--; //Cancel out the time elapsed timer
+  
+  escapeMusic.stop();
+
+  victoryMusic.stop();
+
+  if (postDeathSoundPlayAmount === 0) {
+    postDeathSound.play();
+    postDeathSoundPlayAmount = 1;
+  }
 
   //Once the circle covers the screen, display post death text
   if (circleRadius >= width * 1.5) {
@@ -1140,7 +1148,7 @@ function speedIncreaseText() {
 
 function windowResizedText() {
   text4X = 0;
-  text4Y = 0;
+  text4Y = -(pixelScale * 40);
   text4Width = width;
   text4Height = height;
 
@@ -1152,7 +1160,7 @@ function windowResizedText() {
   fill("red");
   textFont("Helvetica");
   textSize(speedIncreaseTextSize);
-  textAlign(CENTER, TOP);
+  textAlign(CENTER, BOTTOM);
   text(text4Contents, text4X, text4Y, text4Width, text4Height);
 }
 
