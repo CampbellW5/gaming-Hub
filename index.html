@@ -1,19 +1,26 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html> <!-- Declaration telling the browser to expect an HTML document. -->
+<html>
+    <head> 
+        <!-- Include the p5.js libraries -->
     <script src="p5.min.js"></script>
     
     <script src="p5.dom.min.js"></script>
     
     <script src="p5.sound.min.js"></script>
     
+            <!-- Include the comfortaa font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Comfortaa" />
     
     <meta charset="utf-8">
     
+                <!-- Add the favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     
+                    <!-- Add the tab title -->
     <title>Gaming Hub</title>
     
     <style>
+        /* Create a class for the header */
 .header {
 position: fixed; 
 margin-left: auto;
@@ -29,6 +36,7 @@ font-size: 1.35vw;
 background-color: #3f93dfff;
 }
 
+        /* Create a class for the Investing Simulator text on the header */
 .investingSimulatorHeaderText {
 position: fixed; 
 margin-left: auto;
@@ -44,7 +52,8 @@ font-size: 1.35vw;
 font-family: Comfortaa;
 color: white;
 }
-    
+        
+    /* Create a class for the Winter Getaway text on the header */
 .winterGetawayHeaderText {
 position: fixed; 
 margin-left: auto;
@@ -61,6 +70,7 @@ font-family: Comfortaa;
 color: white;
 }
     
+        /* Create a class for the website logo */
 .websiteLogo {
 position: fixed; 
 margin-left: auto;
@@ -68,22 +78,25 @@ margin-right: auto;
 z-index: 1005;
 }
     
+        /* A link in the header and footer is white by default*/
 a:link, a:visited {
 color: white;
 text-decoration: none;
 }
         
+        /* A link is in the header and footer becomes black when hovered over */
 a:hover, a:active {
 color: black;
 text-decoration: none;
 }
         
+        /* A link in the body is always light blue */
 a.body:link, a.body:visited, a.body:hover, a.body:active {
 color: #3f93dfff;
 text-decoration: none;
 }
 
-
+/* Create a class for the title text */
 h1 {
 position: absolute; 
 margin-left: auto;
@@ -100,7 +113,7 @@ font-family: Comfortaa;
 color: #3f93dfff;
 }
 
-
+/* Create a class for the Investing Simulator title for the preview */
 .investingSimulatorTitle {
 position: absolute;
 margin-left: auto;
@@ -117,6 +130,7 @@ font-family: Comfortaa;
 color: #3f93dfff;
 }
 
+/* Create a class for the Investing Simulator picture for the preview */
 .investingSimulatorPicture {
 position: absolute;
 margin-left: auto;
@@ -128,6 +142,7 @@ text-align: center;
 z-index: 950;
 }
 
+/* Create a class for the Winter Getaway title for the preview */
 .winterGetawayTitle {
 position: absolute;
 margin-left: auto;
@@ -144,6 +159,7 @@ font-family: Comfortaa;
 color: #3f93dfff;
 }
 
+/* Create a class for the Winter Getaway picture for the preview */
 .winterGetawayPicture {
 position: absolute;
 margin-left: auto;
@@ -154,7 +170,8 @@ top: 56.5vw;
 text-align: center;
 z-index: 950;
 }
-        
+    
+/* Create a class for the space filler white picture */
 .spaceFillerWhitePicture {
 position: absolute;
 margin-left: auto;
@@ -165,7 +182,8 @@ top: 90vw;
 text-align: center;
 z-index: 950; 
 }
-        
+  
+/* Create a class for the footer */
 .footer {
 position: fixed; 
 margin-left: auto;
@@ -181,7 +199,8 @@ font-size: 1.35vw;
 background-color: #3f93dfff;
 color: white;
 }
-        
+ 
+/* Create a class for the footer text */
 .footerText {
 position: fixed; 
 margin-left: auto;
@@ -200,6 +219,7 @@ color: white;
   </head>
   <body>
         
+      <!-- Add everything for the running header -->
       <div class="header">
       </div>
     
@@ -217,9 +237,12 @@ color: white;
                </a></p>
       </div>
 
-   
+  
+<!-- Add the title of the page -->
 <h1>Welcome to Gaming Hub</h1>
 
+
+<!-- Add the preview text and images. Include active links in the text and images -->
 <div class="investingSimulatorTitle">
 <h3><a class="body" href="investing-Simulator.html">Investing Simulator</a></h3>
 </div>
@@ -242,10 +265,12 @@ color: white;
 </a>
 </div>
 
+<!-- Add the space filler white picture -->
 <div class="spaceFillerWhitePicture">
 <img src="index/index-Images/space-Filler-White-Picture.jpeg" style="height: 4.5vw; width: 100%; alt="White Filler Picture;">
 </div>
         
+        <! Add the footer and footer text -->                                                                                                                    
       <div class="footer">
       </div>
 
