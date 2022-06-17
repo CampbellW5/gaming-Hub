@@ -1,3 +1,4 @@
+//Initialize all variables
 var investingSimulatorCanvas;
 
 var investingSimulatorrCanvasWidth;
@@ -28,14 +29,21 @@ var submitButtonX;
 var submitButtonY;
 var submitButtonSize;
 
+/*Set timeToPriceChange to 7
+*This number will be counted down to 0;
+*/
 var timeToPriceChange = 7;
 
+//Set the starting book value to 0 CAD
 var totalAmountCAD = 0;
+//Set the starting number of shares to 0
 var totalShares = 0;
+//Set the starting spending power to 5000 CAD
 var spendingPower = 5000;
 var pricePerShare;
 var originalPricePerShare;
 
+//Introduce all the variables required for text
 var timeToPriceChangeTextX;
 var timeToPriceChangeTextY;
 var timeToPriceChangeTextWidth;
@@ -172,18 +180,26 @@ var priceChangeTextHeight;
 var priceChangeTextSize;
 var priceChangeTextContents;
 
+//Set the timePassed to start at 0;
 var timePassed = 0;
 
 var newsStoryNumber;
 
+/*Set buySellDeterminer to 0, 
+*meaning the user is neither buying or selling at the start of the game
+*/
 var buySellDeterminer = 0;
 var priceChangeTextDeterminer = 0;
 
+//Set the tooExpensiveTextNumber to 0, as this text does not appear at the start of the game
 var tooExpensiveTextNumber = 0;
 
 var sharePurchaseAmount = 0;
 
 function setup() {
+  /*Set the canvas width and height using windowWidth
+  *This makes it so that the canvas will scale, no matter the width of the window
+  */
   investingSimulatorCanvasWidth = windowWidth / 2;
   investingSimulatorCanvasHeight = windowWidth / 4;
 
@@ -192,11 +208,13 @@ function setup() {
     investingSimulatorCanvasHeight
   );
 
+  //Define the style, position, and size of the buy button
   buyButtonColor = "white";
   buyButtonX = (windowWidth - width) / 2;
   buyButtonY = (windowHeight - height) / 1.5 + windowWidth * 0.05;
   buyButtonSize = windowWidth * 0.05;
 
+  //Create and style the buy button
   buyButton = createButton("Buy");
   buyButton.mouseClicked(buyStocks);
   buyButton.style("font-size", "1vw");
@@ -206,11 +224,13 @@ function setup() {
   buyButton.size(buyButtonSize);
   buyButton.position(buyButtonX, buyButtonY);
 
+  //Define the style, position, and size of the sell button
   sellButtonColor = "white";
   sellButtonX = buyButton.x + buyButton.width;
   sellButtonY = (windowHeight - height) / 1.5 + windowWidth * 0.05;
   sellButtonSize = windowWidth * 0.05;
 
+  //Create and style the sell button
   sellButton = createButton("Sell");
   sellButton.mouseClicked(sellStocks);
   sellButton.style("font-size", "1vw");
@@ -220,10 +240,12 @@ function setup() {
   sellButton.size(sellButtonSize);
   sellButton.position(sellButtonX, sellButtonY);
 
+  //Define the position and size of the input box
   amountInputX = (windowWidth - width) / 2;
   amountInputY = buyButton.y + buyButton.height;
   amountInputSize = width / 3;
 
+  //Create and style the input box
   amountInput = createInput("");
   amountInput.style("font-size", "1vw");
   amountInput.style("font-family", "Trebuchet MS");
@@ -232,11 +254,13 @@ function setup() {
   amountInput.size(amountInputSize);
   amountInput.position(amountInputX, amountInputY);
 
+  //Define the style, position, and size of the submit button
   submitButtonColor = "white";
   submitButtonX = amountInput.x + amountInput.width;
   submitButtonY = buyButton.y + buyButton.height;
   submitButtonSize = windowWidth * 0.1;
 
+  //Create and style the submit button
   submitButton = createButton("Submit");
   submitButton.mouseClicked(submit);
   submitButton.style("font-size", "1vw");
@@ -246,13 +270,19 @@ function setup() {
   submitButton.size(submitButtonSize);
   submitButton.position(submitButtonX, submitButtonY);
 
+  //Set the frame rate to 60
   frameRate(60);
   
+  //Generate a random price per share between 25 and 100 CAD
   pricePerShare = random(25, 100);
+  /*The below code rounds the pricePerShare to two decimal places
+   *Number.EPSILON is a very small number that ensures accurate rounding
+   */
   pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   
   originalPricePerShare = pricePerShare;
 
+  //Introduce the formulas for book value, shares, and spending power
   totalShares = totalShares + amountInput.value() * 1;
   totalAmountCAD = totalAmountCAD + amountInput.value() * pricePerShare;
   totalAmountCAD = Math.round((totalAmountCAD + Number.EPSILON) * 100) / 100;
@@ -263,24 +293,46 @@ function setup() {
 function draw() {
   centerCanvas();
 
+  //Add the blue rectangle to the top part of the canvas
   blueRectangle();
+  //Add the white rectangle to the rest of the canvas
   whiteRectangle();
 
+  //Add totalAmountText
   totalAmountText();
+  //Add timeToPriceChangeText
   timeToPriceChangeText();
+  //Add sharesText
   sharesText();
+  //Add spendingPowerText
   spendingPowerText();
+  //Add pricePerShareText
   pricePerShareText();
 
+  //Start the time passed timer
   timePassed++;
 
+  //Add the newsStoryPeriod function
   newsStoryPeriod();
+  
+  /*If the priceChangeTextDeterminer is equal to one:
+  *Stop the newsStoryText from appearing by setting the newsStoryNumber to zero
+  *There is not a news story that has a newsStoryNumber of zero.
+  *Therefore, newsStoryText will not appear
+  *Also, add priceChangeText
+  */
   
   if (priceChangeTextDeterminer === 1) {
     newsStoryNumber = 0;
     priceChangeText();
   }
 
+  /*If the buySellDeterminer is equal to one,
+  *the user has clicked the buy button and intends to buy shares
+  *However, if the spendingPower is less than the price of the purchase,
+  *the user cannot afford to purchase that number of shares.
+  *In response, display the tooExpensiveText
+  */
   if (
     buySellDeterminer === 1 &&
     spendingPower < amountInput.value() * pricePerShare
@@ -288,11 +340,20 @@ function draw() {
     tooExpensiveText();
   }
   
+  /*If the buySellDeterminer is equal to two,
+  *the user has clicked the sell button and intends to sell shares.
+  *However, if the user does not own the number of shares they intend to sell,
+  *the transaction cannot be completed.
+  *In response, display the tooManySharesText
+  */
   if (buySellDeterminer === 2 && totalShares < amountInput.value()) {
     tooManySharesText();
   }
 }
 
+/*Center the canvas
+*To suit the website, the Y position of the canvas should be two-thirds of the way down the page
+*/
 function centerCanvas() {
   investingSimulatorCanvasX = (windowWidth - width) / 2;
   investingSimulatorCanvasY = (windowHeight - height) / 1.5;
@@ -302,6 +363,13 @@ function centerCanvas() {
   );
 }
 
+/*If the window is resized:
+*Resize the canvas based on the width of the window
+*Reposition and resize the buy button
+*Reposition and resize the sell button
+*Reposition and resize the amount input
+*Reposition and resize the submit button
+*/
 function windowResized() {
   resizeCanvas(windowWidth / 2, windowWidth / 4);
   centerCanvas();
@@ -319,16 +387,22 @@ function windowResized() {
   submitButton.size(windowWidth * 0.1);
 }
 
+//timeToPriceChangeText function
 function timeToPriceChangeText() {
-  timeToPriceChangeTextX = width - windowWidth * 0.127;
   timeToPriceChangeTextY = windowWidth * 0.005;
   timeToPriceChangeTextWidth = width;
   timeToPriceChangeTextHeight = height;
 
   timeToPriceChangeTextSize = windowWidth * 0.01;
 
+  if (timeToPriceChange > 1 || timeToPriceChange === 0) {
   timeToPriceChangeTextContents =
     timeToPriceChange + " days to next price change";
+    timeToPriceChangeTextX = width - windowWidth * 0.127;
+  } else if (timeToPriceChange === 1) {
+    timeToPriceChangeTextContents = timeToPriceChange + " day to next price change";
+    timeToPriceChangeTextX = width - windowWidth * 0.1225;
+  }
 
   fill("white");
   textFont("Trebuchet MS");
@@ -343,6 +417,7 @@ function timeToPriceChangeText() {
   );
 }
 
+//totalAmountText function
 function totalAmountText() {
   totalAmountTextX = windowWidth * 0.005;
   totalAmountTextY = windowWidth * 0.005;
@@ -366,6 +441,7 @@ function totalAmountText() {
   );
 }
 
+//sharesText function
 function sharesText() {
   sharesTextX = windowWidth * 0.005;
   sharesTextY = windowWidth * 0.036;
@@ -389,6 +465,7 @@ function sharesText() {
   );
 }
 
+//spendingPowerText
 function spendingPowerText() {
   spendingPowerTextX = windowWidth * 0.005;
   spendingPowerTextY = windowWidth * 0.021;
@@ -412,6 +489,7 @@ function spendingPowerText() {
   );
 }
 
+//pricePerShareText function
 function pricePerShareText() {
   pricePerShareTextX = 0;
   pricePerShareTextY = windowWidth * 0.021;
@@ -435,6 +513,7 @@ function pricePerShareText() {
   );
 }
 
+//whiteRectangle function
 function whiteRectangle() {
   whiteRectangleX = 0;
   whiteRectangleY = windowWidth * 0.05;
@@ -452,6 +531,7 @@ function whiteRectangle() {
   );
 }
 
+//blueRectangle function
 function blueRectangle() {
   blueRectangleX = 0;
   blueRectangleY = 0;
@@ -469,6 +549,7 @@ function blueRectangle() {
   );
 }
 
+//newsStory1 function
 function newsStory1() {
   newsStory1X = 0;
   newsStory1Y = width - windowWidth * 0.3;
@@ -493,6 +574,7 @@ function newsStory1() {
   );
 }
 
+//newsStory2 function
 function newsStory2() {
   newsStory2X = 0;
   newsStory2Y = width - windowWidth * 0.3;
@@ -517,6 +599,7 @@ function newsStory2() {
   );
 }
 
+//newsStory3 function
 function newsStory3() {
   newsStory3X = 0;
   newsStory3Y = width - windowWidth * 0.3;
@@ -541,6 +624,7 @@ function newsStory3() {
   );
 }
 
+//newsStory4 function
 function newsStory4() {
   newsStory4X = 0;
   newsStory4Y = width - windowWidth * 0.3;
@@ -565,6 +649,7 @@ function newsStory4() {
   );
 }
 
+//newsStory5 function
 function newsStory5() {
   newsStory5X = 0;
   newsStory5Y = width - windowWidth * 0.3;
@@ -589,6 +674,7 @@ function newsStory5() {
   );
 }
 
+//newsStory6 function
 function newsStory6() {
   newsStory6X = 0;
   newsStory6Y = width - windowWidth * 0.3;
@@ -613,6 +699,7 @@ function newsStory6() {
   );
 }
 
+//newsStory7 function
 function newsStory7() {
   newsStory7X = 0;
   newsStory7Y = width - windowWidth * 0.3;
@@ -637,6 +724,7 @@ function newsStory7() {
   );
 }
 
+//newsStory8 function
 function newsStory8() {
   newsStory8X = 0;
   newsStory8Y = width - windowWidth * 0.3;
@@ -646,7 +734,7 @@ function newsStory8() {
   newsStory8TextSize = windowWidth * 0.01;
 
   newsStory8Contents =
-    "Automatic Hand Washing Systems revamped their best selling product. The improvement was expensive, yet the early returns are promising.";
+    "Automatic Hand Washing Systems revamped their best-selling product. The improvement was expensive, yet the early returns are promising.";
 
   fill("#3f93df");
   textFont("Trebuchet MS");
@@ -661,6 +749,7 @@ function newsStory8() {
   );
 }
 
+//newsStory9 function
 function newsStory9() {
   newsStory9X = 0;
   newsStory9Y = width - windowWidth * 0.3;
@@ -670,7 +759,7 @@ function newsStory9() {
   newsStory9TextSize = windowWidth * 0.01;
 
   newsStory9Contents =
-    "The S&P 500 is down collectivly. AHW stock prices have yet to react.";
+    "The S&P 500 is down collectively. AHW stock prices have yet to react.";
 
   fill("#3f93df");
   textFont("Trebuchet MS");
@@ -685,6 +774,7 @@ function newsStory9() {
   );
 }
 
+//newsStory10 function
 function newsStory10() {
   newsStory10X = 0;
   newsStory10Y = width - windowWidth * 0.3;
@@ -709,6 +799,15 @@ function newsStory10() {
   );
 }
 
+/*Function to randomly generate a news story and to control the timeToPriceChange
+*Every five seconds, the timeToPriceChange will decrease by one
+*When the timeToPriceChange is equal to one:
+*Set timePassed to -600 so that the priceChange period will last 10 seconds
+*Set the priceChangeTextDeterminer to one so that the priceChangeText will appear
+*When the timePassed divided by 60 (60 frames per second) and rounded is equal to 1:
+*Randomly generate a newsStoryNumber that is associated with a news story
+*This news story will be displayed on the canvas
+*/
 function newsStoryPeriod() {
   if (round(timePassed / 60 === 1)) {
     timeToPriceChange = 7;
@@ -739,6 +838,10 @@ function newsStoryPeriod() {
     priceChangeTextDeterminer = 1;
   }
 
+  /*If and else if statements to display the randomly picked news story
+  *Define the newsStoryNumber as the current newsStoryNumber
+  *so that the newsStoryNumber will not be randomly picked until requested
+  */
   if (newsStoryNumber === 1) {
     newsStory1();
     newsStoryNumber = 1;
@@ -772,6 +875,7 @@ function newsStoryPeriod() {
   }
 }
 
+//tooExpensiveText function
 function tooExpensiveText() {
   tooExpensiveTextX = 0;
   tooExpensiveTextY = width - windowWidth * 0.4;
@@ -798,6 +902,7 @@ function tooExpensiveText() {
   );
 }
 
+//tooManySharesText function
 function tooManySharesText() {
   tooManySharesTextX = 0;
   tooManySharesTextY = width - windowWidth * 0.4;
@@ -824,6 +929,10 @@ function tooManySharesText() {
   ); 
 }
 
+/*buyStocks function
+*Set the buySellDeterminer to one to indicate that shares are being purchased
+*Recolour the buy button so that users know they have clicked the buy button
+*/
 function buyStocks() {
   buySellDeterminer = 1;
 
@@ -834,6 +943,10 @@ function buyStocks() {
   sellButton.style("color", "#3f93df");
 }
 
+/*sellStocks function
+*Set the buySellDeterminer to two in order to indicate that shares are being sold
+*Recolour the sell button so that users know they have clicked the sell button
+*/
 function sellStocks() {
   buySellDeterminer = 2;
 
@@ -844,6 +957,27 @@ function sellStocks() {
   sellButton.style("color", "black");
 }
 
+
+/*submit function for when users submit their buy or sell orders
+*If users are buying shares and they can afford the purchase:
+*The shares purchased are added to the totalShares
+*The book value is increased by the dollar amount purchased
+*The spending power is decreased by the dollar amount purchased
+*The tooExpensiveText is removed
+*The text in the input box is erased
+*If users are buying shares and they cannot afford the purchase:
+*Display tooExpensiveText to alert users that they cannot afford their purchase
+*Do not allow them to submit their purchase
+*If users are selling shares and they have enough shares to sell the number of shares they desire:
+*The totalShares are subtracted by the shares sold
+*The book value is decreased by the dollar amount sold
+*The spending power is increased by the dollar amount sold
+*The tooExpensiveText is removed
+*The text in the input box is removed
+*If users are selling shares and do not have enough shares to sell the number of shares they desire:
+*The tooManySharesText is displayed
+*Do not allow them to submit their sale
+*/
 function submit() {
   if (
     buySellDeterminer === 1 &&
@@ -876,6 +1010,19 @@ function submit() {
   }
 }
 
+
+/*priceChange function
+*newsStory1 is negative; therefore, the pricePerShare will decrease by between 2% and 10%
+*newsStory2 is quite negative; therefore, the pricePerShare will decrease by between 2% and 25%
+*newsStory3 is positive; therefore, the pricePerShare will increase by between 1% and 10%
+*newsStory4 is negative; therefore, the pricePerShare will decrease by between 2% and 20%
+*newsStory5 is is quite positive; therefore, the pricePerShare will increase by between 5% and 15%
+*newsStory6 is extremely positive; therefore, the pricePerShare will increase by between 2% and 30%
+*newsStory7 can be negative or positive; therefore, the pricePerShare will change somewhere between a decrease of 5% and an increase of 5%
+*newsStory8 can be negative or positive; therefore, the pricePerShare will change somewhere between a decrease of 6% and an increase of 6%
+*newsStory9 can be negative or positive; therefore, the pricePerShare will change somewhere between a decrease of 3% and an increase of 3% 
+*newsStory10 is negative; therefore, the pricePerShare will decrease by between 2% and 8%
+*/
 function priceChange() {
   if (newsStoryNumber === 1) {
     originalPricePerShare = pricePerShare;
@@ -883,7 +1030,7 @@ function priceChange() {
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 2) {
     originalPricePerShare = pricePerShare;
-    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * -0.5);
+    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * -0.25);
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 3) {
     originalPricePerShare = pricePerShare;
@@ -891,7 +1038,7 @@ function priceChange() {
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 4) {
     originalPricePerShare = pricePerShare;
-    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * -0.4);
+    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * -0.2);
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 5) {
     originalPricePerShare = pricePerShare;
@@ -899,7 +1046,7 @@ function priceChange() {
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 6) {
     originalPricePerShare = pricePerShare;
-    pricePerShare = pricePerShare + random(pricePerShare * 0.02, pricePerShare * 0.5);
+    pricePerShare = pricePerShare + random(pricePerShare * 0.02, pricePerShare * 0.3);
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 7) {
     originalPricePerShare = pricePerShare;
@@ -911,11 +1058,11 @@ function priceChange() {
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 9) {
     originalPricePerShare = pricePerShare;
-    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * 0.02);
+    pricePerShare = pricePerShare + random(pricePerShare * -0.03, pricePerShare * 0.03);
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   } else if (newsStoryNumber === 10) {
     originalPricePerShare = pricePerShare;
-    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * -0.8);
+    pricePerShare = pricePerShare + random(pricePerShare * -0.02, pricePerShare * -0.08);
     pricePerShare = Math.round((pricePerShare + Number.EPSILON) * 100) / 100;
   }
   
@@ -923,6 +1070,8 @@ function priceChange() {
   totalAmountCAD = Math.round((totalAmountCAD + Number.EPSILON) * 100) / 100;
 }
 
+
+//priceChangeText function
 function priceChangeText() {
   priceChangeTextX = 0;
   priceChangeTextY = width - windowWidth * 0.3;
@@ -932,7 +1081,7 @@ function priceChangeText() {
   priceChangeTextSize = windowWidth * 0.01;
 
   priceChangeTextContents =
-    "A price change occured. The original price per share was " + originalPricePerShare + " CAD. The new price per share is " + pricePerShare + " CAD.";
+    "A price change occurred. The original price per share was " + originalPricePerShare + " CAD. The new price per share is " + pricePerShare + " CAD.";
 
   fill("#3f93df");
   textFont("Trebuchet MS");
@@ -946,3 +1095,5 @@ function priceChangeText() {
     priceChangeTextHeight
   );
 }
+
+//This is the end of the code. Thank you for reading.
