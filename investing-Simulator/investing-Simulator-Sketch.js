@@ -1097,3 +1097,5 @@ function priceChangeText() {
 }
 
 //This is the end of the code. Thank you for reading.
+
+//This is the end of the code. Thank you for reading.
