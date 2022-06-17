@@ -1,6 +1,9 @@
 
-<!DOCTYPE html><html><head>
-    <script src="p5.min.js"></script>
+<!DOCTYPE html> <!-- Declaration telling the browser to expect an HTML document. -->
+<html>
+    <head>
+         <!-- Include the p5.js libraries -->
+    <script src="p5.min.js"></script> 
     
     <script src="p5.dom.min.js"></script>
     
@@ -9,15 +12,19 @@
     <meta charset="utf-8">
     
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-    
+        
+        <!-- Include the comfortaa font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Comfortaa" />
-    
+        
+        <!-- Add the favicon -->
     <link rel="shortcut icon" type"image/x-icon" href="favicon.ico">
-    
+        
+        <!-- Add the tab title -->
     <title>Winter Getaway | Gaming Hub</title>
     
     
 <style>
+    /* Create a class for the header */
 .header {
 position: fixed; 
 margin-left: auto;
@@ -33,6 +40,7 @@ font-size: 1.35vw;
 background-color: #3f93dfff;
 }
 
+    /* Create a class for the Investing Simulator text on the header */
 .investingSimulatorHeaderText {
 position: fixed; 
 margin-left: auto;
@@ -48,7 +56,8 @@ font-size: 1.35vw;
 font-family: Comfortaa;
 color: white;
 }
-    
+
+    /* Create a class for the Winter Getaway text on the header */
 .winterGetawayHeaderText {
 position: fixed; 
 margin-left: auto;
@@ -65,6 +74,7 @@ font-family: Comfortaa;
 color: white;
 }
     
+    /* Create a class for the website logo */
 .websiteLogo {
 position: fixed; 
 margin-left: auto;
@@ -72,16 +82,19 @@ margin-right: auto;
 z-index: 1005;
 }
     
+    /* A link in the header and footer is white by default*/
 a:link, a:visited {
 color: white;
 text-decoration: none;
 }
 
+      /* A link is in the header and footer becomes black when hovered over */
 a:hover, a:active {
 color: black;
 text-decoration: none;
 }
     
+    /* Create a class for the Winter Getaway title */
 .winterGetawayTitle {
 position: absolute; 
 margin-left: auto;
@@ -98,6 +111,7 @@ font-family: Comfortaa;
 color: #3f93dfff;
 }
 
+   /* Create a class for the Winter Getaway subtitle */
 .winterGetawaySubtitle {
 position: absolute; 
 margin-left: auto;
@@ -114,6 +128,7 @@ font-family: Comfortaa;
 color: #3f93dfff;
 }
     
+    /* Create a class for the footer */
 .footer {
 position: fixed; 
 margin-left: auto;
@@ -129,6 +144,7 @@ font-size: 1.35vw;
 background-color: #3f93dfff;
 }
     
+    /* Create a class for the controls text title */
 .controlsTextTitle {
 position: fixed;
 margin-left: auto;
@@ -144,7 +160,8 @@ font-size: 1.25vw;
 font-family: Comfortaa;
 color: white;
 }
-    
+   
+    /* Creates classes for the controls text body */
 .controlsTextBody1 {
 position: fixed;
 margin-left: auto;
@@ -242,6 +259,7 @@ color: white;
   </head>
   <body>
     
+       <!-- Add the Gaming Hub logo, Investing Simulator text, and the Winter Getaway text to the running header -->
       <div class="header">
       </div>
     
@@ -259,6 +277,7 @@ color: white;
                </a></p>
       </div>
 
+       <!-- Add the Winter Getaway title and subtitle */
       <div class="winterGetawayTitle">
           <h1>Welcome to Winter Getaway</h1>
       </div>
@@ -267,16 +286,20 @@ color: white;
           <h6>Survive 5 minutes to escape</h6>
       </div>
       
+      <!-- Add the JavaScript sketch -->
       <script src="winter-Getaway/winter-Getaway-Sketch.js">
       </script>
 
+      <!-- Add the footer -->
       <div class="footer">
       </div>
 
+      <!-- Add the controls text title -->
       <div class="controlsTextTitle">
           <h6>Controls</h6>
       </div>
 
+      <!-- Add the controls text body -->
       <div class="controlsTextBody1">
           <p>Up and right arrows move the green luxury car up a lane</p>
       </div>
