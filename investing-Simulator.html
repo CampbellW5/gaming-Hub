@@ -1,5 +1,8 @@
 
-<!DOCTYPE html><html><head>
+<!DOCTYPE html> <!-- Declaration telling the browser to expect an HTML document. -->
+<html>
+    <head>
+        <!-- Include the p5.js libraries -->
     <script src="p5.min.js"></script>
     
     <script src="p5.dom.min.js"></script>
@@ -11,16 +14,21 @@
     <meta charset="utf-8">
     
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-    
+        
+        <!-- Include the comfortaa font -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Comfortaa" />
-    
+        
+        <!-- Add the favicon -->
     <link rel="shortcut icon" type"image/x-icon" href="favicon.ico">
-    
+        
+        <!-- Add the CSS stylesheet -->
     <link rel="stylesheet" type="text/css" href="style.css">
-    
+        
+        <!-- Add the tab title -->
     <title>Investing Simulator | Gaming Hub</title>
   
   <style>
+      /* Create a class for the header */
 .header {
 position: fixed; 
 margin-left: auto;
@@ -36,6 +44,7 @@ font-size: 1.35vw;
 background-color: #3f93dfff;
 }
 
+       /* Create a class for the Investing Simulator text on the header */
 .investingSimulatorHeaderText {
 position: fixed; 
 margin-left: auto;
@@ -52,6 +61,7 @@ font-family: Comfortaa;
 color: white;
 }
     
+      /* Create a class for the Winter Getaway text on the header */
 .winterGetawayHeaderText {
 position: fixed; 
 margin-left: auto;
@@ -68,6 +78,7 @@ font-family: Comfortaa;
 color: white;
 }
     
+      /* Create a class for the website logo */
 .websiteLogo {
 position: fixed; 
 margin-left: auto;
@@ -75,16 +86,19 @@ margin-right: auto;
 z-index: 1005;
 }
     
+      /* A link in the header and footer is white by default*/
 a:link, a:visited {
 color: white;
 text-decoration: none;
 }
 
+      /* A link is in the header and footer becomes black when hovered over */
 a:hover, a:active {
 color: black;
 text-decoration: none;
 }
-    
+      
+    /* Create a class for the Investing Simulator title */
 .investingSimulatorTitle {
 position: absolute; 
 margin-left: auto;
@@ -101,6 +115,7 @@ font-family: Comfortaa;
 color: #3f93dfff;
 }
 
+      /* Create a class for the Winter Getaway subtitle */
 .investingSimulatorSubtitle {
 position: absolute; 
 margin-left: auto;
@@ -116,7 +131,8 @@ font-size: 1.35vw;
 font-family: Comfortaa;
 color: #3f93dfff;
 }
-    
+
+      /* Create a class for the footer */
 .footer {
 position: fixed; 
 margin-left: auto;
@@ -132,6 +148,7 @@ font-size: 1.35vw;
 background-color: #3f93dfff;
 }
       
+      <* Create a class for the how to play text title */
 .howToPlayTextTitle {
 position: fixed;
 margin-left: auto;
@@ -148,6 +165,7 @@ font-family: Comfortaa;
 color: white;
 }
     
+      /* Create classes for the how to play text body */
 .howToPlayTextBody1 {
 position: fixed;
 margin-left: auto;
@@ -245,6 +263,7 @@ color: white;
   </head>
   <body>
     
+      <!-- Add the Gaming Hub logo, Investing Simulator text, and the Winter Getaway text to the running header -->
       <div class="header">
       </div>
     
@@ -262,6 +281,7 @@ color: white;
                </a></p>
       </div>
 
+       <!-- Add the Investing Simulator title and subtitle -->
       <div class="investingSimulatorTitle">
           <h1>Welcome to the Investing Simulator</h1>
       </div>
@@ -270,16 +290,20 @@ color: white;
           <h6>Trade Automatic Hand Washing Sytems like a pro</h6>
       </div>
       
+       <!-- Add the JavaScript sketch -->
       <script src="investing-Simulator/investing-Simulator-Sketch.js">
       </script>
 
+      <!-- Add the footer -->
       <div class="footer">
       </div>
 
+       <!-- Add the how to play text title -->
        <div class="howToPlayTextTitle">
           <h6>How To Play</h6>
       </div>
 
+      <!-- Add how to play text body -->
       <div class="howToPlayTextBody1">
           <p>1. Read the news story.</p>
       </div>
