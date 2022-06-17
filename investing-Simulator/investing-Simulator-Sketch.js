@@ -559,7 +559,7 @@ function newsStory1() {
   newsStory1TextSize = windowWidth * 0.01;
 
   newsStory1Contents =
-    "Automatic Hand Washer Systems (AHW) has released their quarterly earnings. The figure is significantly lower than experts had predicted.";
+    "Automatic Hand Washing Systems (AHW) has released their quarterly earnings. The figure is significantly lower than experts had predicted.";
 
   fill("#3f93df");
   textFont("Trebuchet MS");
@@ -659,7 +659,7 @@ function newsStory5() {
   newsStory5TextSize = windowWidth * 0.01;
 
   newsStory5Contents =
-    "Hyatt Hotels Corporation (H) agreed to install the Automatic Hand Washer inside their hotel rooms";
+    "Hyatt Hotels Corporation agreed to install the Automatic Hand Washer inside their hotel rooms";
 
   fill("#3f93df");
   textFont("Trebuchet MS");
