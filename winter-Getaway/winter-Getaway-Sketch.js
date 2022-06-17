@@ -77,6 +77,7 @@ var slowCarAppear;
 var slowCarWidth;
 var slowCarHeight;
 
+//Start all timeRunning clocks at 0
 var timeRunning = 0;
 
 var timeRunning2 = 0;
@@ -107,6 +108,7 @@ var oldSlowTryckXMax;
 
 var uncomingSemiX;
 
+//Start timers at 0
 var timeElapsed = 0;
 
 var speedUpTimer = 0;
@@ -165,8 +167,6 @@ var startGameNumber = 0;
 
 var winterGetawayCanvas;
 
-var winterGetawayCanvas2;
-
 var snowflakePhase = 1;
 
 var text3X;
@@ -186,10 +186,6 @@ var pauseGameButtonFontSize;
 var pauseGameButtonColor;
 var pauseGameButtonX;
 var pauseGameButtonY;
-
-var timeToSpeedIncrease = 3;
-
-var resetCanvasButton;
 
 var windowResizedCounter = 0;
 
@@ -223,7 +219,7 @@ var victoryMusicPlayAmount = 0;
 
 var escapeMusicPlayAmount = 0;
 
-//Preload images so that they are ready when the game begins
+//Preload images and sounds so they are ready when the game begins
 function preload() {
   bgImg = loadImage("winter-Getaway/winter-Getaway-Images/moving-Road.jpeg");
 
@@ -261,19 +257,26 @@ function preload() {
 }
 
 function setup() {
+  /*Set canvas width and height based on the window dimensions
+   *This ensures scalability
+   */
   canvasWidth = windowWidth * 0.98;
   canvasHeight = windowHeight * 0.3998;
 
-  winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight); //Create canvas with window width, which adds transferability
+  winterGetawayCanvas = createCanvas(canvasWidth, canvasHeight);
 
   centerCanvas();
 
+  //Set a pixel scale so that every element is scaled the same
   pixelScale = windowHeight * 0.0012;
 
+  //Set a movement scale so that the speed of the game easily be adjusted
   movementScale = windowHeight * 0.0012;
 
+  //The speed at which the road scrolls to the left
   scrollSpeed = pixelScale * 4;
 
+  //Credit to slow_izzm on the p5.js web editor for this code
   confettiColor = [color("#00aeef"), color("#ec008c"), color("#72c8b6")];
   for (let i = 0; i < 100; i++) {
     confetti[i] = new Confetti(
@@ -283,58 +286,82 @@ function setup() {
     );
   }
 
+  //The four Y positions the green luxury car may exist
   carImgYPosition1 = pixelScale * -2;
   carImgYPosition2 = pixelScale * 81;
   carImgYPosition3 = pixelScale * 172;
   carImgYPosition4 = pixelScale * 255;
 
+  //The two Y positions the red car may exist
   uncomingCarYPosition1 = pixelScale * 85;
   uncomingCarYPosition2 = pixelScale * 255;
 
+  //The two Y positions the blue semi may exist
   uncomingSemiYPosition1 = pixelScale * 89;
   uncomingSemiYPosition2 = pixelScale * 259;
 
+  //The two Y positions the slow truck may exist
   oldSlowTruckYPosition1 = pixelScale * 2.75;
   oldSlowTruckYPosition2 = pixelScale * 172.5;
 
+  //The two Y positions the slow car may exist
   slowCarYPosition1 = pixelScale * 2.75;
   slowCarYPosition2 = pixelScale * 172.5;
 
+  //Set the starting of position of the green luxury car
   carImgX = 0;
   carImgY = pixelScale * -2;
 
+  //Set the width and height of the green luxury car
   carImgWidth = pixelScale * 150;
   carImgHeight = pixelScale * 82;
 
+  //Generate a random Y position from the two options for the red car
   uncomingCarYOptions = [uncomingCarYPosition1, uncomingCarYPosition2];
+
+  //Generate the next random Y position from the two options for the red car
   uncomingCarY2Options = [uncomingCarYPosition1, uncomingCarYPosition2];
 
+  /*Set the width and height of the red card
+   *Notice pixelScale is used so that the car will be the proper size, no matter the window dimensions
+   */
   uncomingCarWidth = pixelScale * 168;
   uncomingCarHeight = pixelScale * 82;
 
+  //Generate a random Y position from the two options for the blue semi
   uncomingSemiYOptions = [uncomingSemiYPosition1, uncomingSemiYPosition2];
+  //Generate the next random Y position for the two options for the blue semi
   uncomingSemiY2Options = [uncomingSemiYPosition1, uncomingSemiYPosition2];
 
+  //Set the width and height of the blue semi
   uncomingSemiWidth = pixelScale * 442;
   uncomingSemiHeight = pixelScale * 70;
 
+  //Generate a random Y position from the two options for the slow truck
   oldSlowTruckYOptions = [oldSlowTruckYPosition1, oldSlowTruckYPosition2];
+  //Generate the next random Y position for the two options for the slow truck
   oldSlowTruckY2Options = [oldSlowTruckYPosition1, oldSlowTruckYPosition2];
 
+  //Set the width and height of the slow truck
   oldSlowTruckWidth = pixelScale * 194;
   oldSlowTruckHeight = pixelScale * 76;
 
+  //Generate a random Y position from the two options for the slow car
   slowCarYOptions = [slowCarYPosition1, slowCarYPosition2];
+  //Generate the next random Y position for the two options for the slow car
   slowCarY2Options = [slowCarYPosition1, slowCarYPosition2];
 
+  //Set the width and height of the slow car
   slowCarWidth = pixelScale * 190;
   slowCarHeight = pixelScale * 76;
 
   circleRadius = pixelScale * 30;
 
+  //Set the maximum and minimum radius of a snowflake
   snowflakeMinRadius = pixelScale * 2;
   snowflakeMaxRadius = pixelScale * 5;
 
+  //Set the position and dimensions of the victory road;
   victoryRoadX = width;
   victoryRoadY = 0;
   victoryRoadWidth = width;
@@ -346,13 +373,14 @@ function setup() {
 
   x2 = width;
 
-  //Initialize all variables that include width
+  //Define all variables that include width
   uncomingCarX = width + pixelScale * 4;
 
   slowCarXMin = width + pixelScale * 250;
 
   slowCarXMax = width + pixelScale * 400;
 
+  //State the X options for the red car
   uncomingCarXOptions = [
     pixelScale * 4 + width,
     pixelScale * 100 + width,
@@ -372,6 +400,7 @@ function setup() {
     pixelScale * 1500 + width,
   ];
 
+  //State the X options for the blue semi
   uncomingSemiXOptions = [
     pixelScale * 4 + width,
     pixelScale * 100 + width,
@@ -391,13 +420,16 @@ function setup() {
     pixelScale * 1500 + width,
   ];
 
+  /*State the maximum and minimum starting X position of the slow truck    *for when the vehicle is moved to the right of the canvas
+   */
   oldSlowTruckXMin = width + pixelScale * 4;
 
   oldSlowTruckXMax = width + pixelScale * 100;
 
+  //Set the starting X position of the blue semi
   uncomingSemiX = width + pixelScale * 4;
 
-  //Randomly generates y-positions based on given options
+  //Randomly generates Y positions based on given options
   uncomingCarY = random(uncomingCarYOptions);
 
   uncomingSemiY = random(uncomingSemiYOptions);
@@ -410,33 +442,44 @@ function setup() {
 
   uncomingCarX2 = floor(random(uncomingCarXOptions));
 
-  //Randomly generates starting positions, in turn, changing when vehicles appear
+  //Randomly set a time that must be reached before the red car appears to the right of the canvas
   uncomingCarAppear = floor(random(10, 50));
 
+  //Randomly set a time that must be reached before the blue semi appears to the right of the canvas
   uncomingSemiAppear = floor(random(10, 50));
 
+  //Randomly set a time that must be reached before the slow truck appears to the right of the canvas
   oldSlowTruckAppear = floor(random(10, 50));
 
+  //Randomly set a time that must be reached before the slow car appears to the right of the canvas
   slowCarAppear = floor(random(10, 50));
 
+  //Randomly set a starting X position of the slow truck that is between the maximum and minimum values
   oldSlowTruckX = floor(random(oldSlowTruckXMin, oldSlowTruckXMax));
 
+  //Randomly set a starting X position of the slow car that is between the maximum and minimum values
   slowCarX = floor(random(slowCarXMin, slowCarXMax));
 
+  //Removes the border around shapes
   noStroke();
 
+  //Add the top road
   image(bgImg, x1, 0, width, pixelScale * 162);
   image(bgImg, x2, 0, width, pixelScale * 162);
 
+  //Add the bottom road
   image(bgImg, x1, pixelScale * 170, width, pixelScale * 162);
   image(bgImg, x2, pixelScale * 170, width, pixelScale * 162);
 
+  //Add the green luxury car
   image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
 
+  //Specify the colour, X position, and Y position of the start game button
   startGameButtonColor = "#3f93dfff";
   startGameButtonX = windowWidth * 0.205;
   startGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.4075;
 
+  //Add and style the start/resume game button
   startGameButton = createButton("Start/Resume Game");
   startGameButton.mouseClicked(startGame);
   startGameButton.style("font-size", "1.5vh");
@@ -444,10 +487,12 @@ function setup() {
   startGameButton.style("background-color", startGameButtonColor);
   startGameButton.position(startGameButtonX, startGameButtonY);
 
+  //Specify the colour, X position, and Y position of the start game button
   pauseGameButtonColor = "#3f93dfff";
   pauseGameButtonX = windowWidth * 0.475;
   pauseGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.4075;
 
+  //Add and style the pause game button
   pauseGameButton = createButton("Pause Game");
   pauseGameButton.mouseClicked(pauseGame);
   pauseGameButton.style("font-size", "1.5vh");
@@ -455,10 +500,12 @@ function setup() {
   pauseGameButton.style("background-color", pauseGameButtonColor);
   pauseGameButton.position(pauseGameButtonX, pauseGameButtonY);
 
+  //Specify the colour, X position, and Y position of the restart game button
   restartGameButtonColor = "#3f93dfff";
   restartGameButtonX = windowWidth * 0.7275;
   restartGameButtonY = (windowHeight - height) / 1.5 + windowHeight * 0.4075;
 
+  //Add and style the restart game button
   restartGameButton = createButton("Restart Game");
   restartGameButton.mouseClicked(restartGame);
   restartGameButton.style("font-size", "1.5vh");
@@ -466,10 +513,12 @@ function setup() {
   restartGameButton.style("color", "white");
   restartGameButton.position(restartGameButtonX, restartGameButtonY);
 
+  //Define the variables for the colour, X position, and Y position of the easy mode button
   easyModeButtonColor = "#3f93dfff";
   easyModeButtonX = windowWidth * 0.236;
   easyModeButtonY = windowHeight * 0.366;
 
+  //Add and style the easy mode button
   easyModeButton = createButton("Easy");
   easyModeButton.mouseClicked(easyMode);
   easyModeButton.style("font-size", "1.5vh");
@@ -477,10 +526,12 @@ function setup() {
   easyModeButton.style("background-color", easyModeButtonColor);
   easyModeButton.position(easyModeButtonX, easyModeButtonY);
 
+  //Define the variables for the colour, X position, and Y position of the medium mode button
   mediumModeButtonColor = "#3f93dfff";
   mediumModeButtonX = windowWidth * 0.4825;
   mediumModeButtonY = windowHeight * 0.366;
 
+  //Add and style the medium mode button
   mediumModeButton = createButton("Medium");
   mediumModeButton.mouseClicked(mediumMode);
   mediumModeButton.style("font-size", "1.5vh");
@@ -488,10 +539,12 @@ function setup() {
   mediumModeButton.style("background-color", mediumModeButtonColor);
   mediumModeButton.position(mediumModeButtonX, mediumModeButtonY);
 
+  //Define the variables for the colour, X position, and Y position of the hard mode button
   hardModeButtonColor = "#3f93dfff";
   hardModeButtonX = windowWidth * 0.7425;
   hardModeButtonY = windowHeight * 0.366;
 
+  //Add and style the hard mode button
   hardModeButton = createButton("Hard");
   hardModeButton.mouseClicked(hardMode);
   hardModeButton.style("font-size", "1.5vh");
@@ -499,24 +552,34 @@ function setup() {
   hardModeButton.style("color", "white");
   hardModeButton.position(hardModeButtonX, hardModeButtonY);
 
+  //Add the timer text
   timerText();
 }
 
 function draw() {
+  /*The startGameNumber starts at 0
+   *Pressing the start/resume game button makes the startGameNumber equal to one
+   *Pressing the pause button makes the startGameNumber equal to two, essentially stopping the draw function
+   *Pressing the restart game button makes the startGameNumber equal to two, also stopping most of the draw function
+   */
   if (startGameNumber === 1) {
     fill("grey");
 
-    timeElapsed++; //Start time elapsed timer
+    timeElapsed++; //Start timeElapsed timer
 
-    speedUpTimer++;
+    speedUpTimer++; //Start speedUpTimer
 
-    snowflakeTimer++;
+    snowflakeTimer++; //Start snowflakeTimer
 
+    //Define text2Contents
     text2Contents =
       "You died. \n You survived " +
       round(timeElapsed / 60) +
       " seconds. \n Press the reset button to initiate another round.";
 
+    /*Add the top and bottom roads again.
+     *These roads will move
+     */
     image(bgImg, x1, 0, width, pixelScale * 162);
     image(bgImg, x2, 0, width, pixelScale * 162);
 
@@ -533,7 +596,7 @@ function draw() {
     x1 -= scrollSpeed; //Make it so the two roads will scroll to the left
     x2 -= scrollSpeed;
 
-    /*If and else if statements to control the y-positions
+    /*If and else if statements to control the Y Positions
      *Eliminates instances where vehicles appear on top of each other
      */
     if (
@@ -641,7 +704,11 @@ function draw() {
       carImgX = 0;
     }
 
-    //Use if and else if statements so that vehicles appear at random times
+    /*Use if and else if statements so that vehicles appear at random        *times
+     *For example, if the timeRunning is equal to uncomingCarAppear
+     *cancel out the timeRunning timer, draw the red car
+     *and redefine uncomingCarX so that the red car will move to the left
+     */
     if (timeRunning === uncomingCarAppear) {
       timeRunning = timeRunning - 1;
 
@@ -692,8 +759,7 @@ function draw() {
       slowCarX = slowCarX - movementScale * 1;
     }
 
-    /*If the controlled green luxury car hits another vehicle, game over, commence post death
-     *sequence
+    /*If the controlled green luxury car hits another vehicle, game over, commence post death sequence
      */
     if (
       uncomingCarY === pixelScale * 85 &&
@@ -759,8 +825,9 @@ function draw() {
       postDeathSequence();
     }
 
-    /*For loop to make 40 vehicles of each type appear one after another
-     *Y and x coordinates are random each time for each vehicle
+    /*Use if statements so that if a vehicle is off of the left side of the canvas
+     *the vehicle will be moved off of the right side of the canvas
+     *with a random Y position from the potential options
      */
     if (oldSlowTruckX <= pixelScale * -300) {
       oldSlowTruckY = random(oldSlowTruckY2Options);
@@ -786,6 +853,9 @@ function draw() {
     fill("grey");
     rect(0, pixelScale * 162, width, pixelScale * 8);
 
+    /*Add the snowflakes to the screen
+     *Credit to Aatish Bhatia for the code
+     */
     if (startGameNumber === 1 && snowflakeTimer / 60 >= 2) {
       let t = frameCount / 60; //Update time
 
@@ -801,8 +871,14 @@ function draw() {
       }
     }
 
+    //Add timerText
     timerText();
 
+    /*If the timeElapsed is greater than or equal to 285 seconds (4 minutes and 45 seconds)
+     *and the vehicle is off of the canvas to the right,
+     *stop the movement of the vehicle so that it does not appear again.
+     *This is preperation for the victory sequence
+     */
     if (timeElapsed / 60 >= 285) {
       if (uncomingCarX > width) {
         uncomingCarX = uncomingCarX + movementScale * 4;
@@ -819,6 +895,7 @@ function draw() {
     }
   }
 
+  //If timeElapsed is equal to 300 seconds (5 minutes), add the victory road
   if (timeElapsed / 60 >= 300) {
     image(
       victoryRoadImg,
@@ -828,11 +905,18 @@ function draw() {
       victoryRoadHeight
     );
 
+    //If victoryRoad fills the canvas, stop it from moving
     if (victoryRoadX > 0) {
       victoryRoadX -= scrollSpeed;
     }
 
     image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
+
+    /*If victoryRoad fills the canvas:
+     *add victoryText
+     *add the green luxury car on top of the road
+     *pause the game
+     */
 
     if (victoryRoadX <= 0) {
       victoryText();
@@ -842,12 +926,19 @@ function draw() {
       image(carImg, carImgX, carImgY, carImgWidth, carImgHeight);
 
       pauseGame();
-      
+
+      /*VictoryMusicPlayAmount starts at 0.
+       *Therefore, play the victoryMusic
+       *and set the victoryMusicPlayAmount to 1,
+       *so the music only plays once
+       */
+
       if (victoryMusicPlayAmount === 0) {
-      victoryMusic.play();
-      victoryMusicPlayAmount = 1;
+        victoryMusic.play();
+        victoryMusicPlayAmount = 1;
       }
 
+      //Credit to slow_izzm on the p5.js web editor for this code
       for (let i = 0; i < confetti.length / 2; i++) {
         confetti[i].confettiDisplay();
 
@@ -908,7 +999,9 @@ function keyPressed() {
   }
 }
 
-//Snowflake class
+/*Snowflake class
+ *Credit to Aatish Bhatia for the code
+ */
 function snowflake() {
   //Initialize coordinates
   this.posX = 0;
@@ -921,12 +1014,12 @@ function snowflake() {
   this.radius = sqrt(random(pow(width / 2, 2)));
 
   this.update = function (time) {
-    //X-position follows a circle
+    //X position follows a circle
     let w = 0.6; //Angular speed
     let angle = w * time + this.initialangle;
     this.posX = width / 2 + this.radius * sin(angle);
 
-    //Different size snowflakes fall at slightly different y speeds
+    //Different size snowflakes fall at slightly different Y speeds
     this.posY += pow(this.size, pixelScale * 0.5);
 
     //Delete snowflake if past end of screen
@@ -942,12 +1035,16 @@ function snowflake() {
   };
 }
 
+/*Centre the canvas on the screen
+*To suit the website, the Y position of the canvas is two-thirds of the way down the screen
+*/
 function centerCanvas() {
   canvasX = (windowWidth - width) / 2;
   canvasY = (windowHeight - height) / 1.5;
   winterGetawayCanvas.position(canvasX, canvasY);
 }
 
+//If the window is resized, pause the game and display an alert message to the user
 function windowResized() {
   pauseGame();
 
@@ -958,6 +1055,11 @@ function windowResized() {
   }
 }
 
+/*Stop most of the draw function
+*Make it so the controls do not work
+*Pause the escapeMusic and stop the postDeathMusic
+*Set the escapeMusicPlayAmount to 0 so the escapeMusic will play when the game is resumed
+*/
 function pauseGame() {
   startGameNumber = 2;
 
@@ -966,10 +1068,14 @@ function pauseGame() {
   escapeMusic.pause();
 
   postDeathSound.stop();
-  
+
   escapeMusicPlayAmount = 0;
 }
 
+/*Activate the keys
+*Allow the drop function to execute
+*Play the escapeMusic
+*/
 function startGame() {
   keyPressedIntializationNumber = 0;
 
@@ -978,11 +1084,21 @@ function startGame() {
   windowResizedCounter = 0;
 
   if (escapeMusicPlayAmount === 0) {
-  escapeMusic.play();
-  escapeMusicPlayAmount = 1;
+    escapeMusic.play();
+    escapeMusicPlayAmount = 1;
   }
 }
 
+/*If the windowResizedCounter is equal to one, 
+*meaning the windowResizedText is not displayed:
+*Reset the X positions of the obstacle vehicles
+*Reset all timers
+*Activate the keys
+*Stop all music
+*Revert back to easy mode
+*Add the two roads, the green luxury car and the timerText for display purposes
+*Reset the victoryRoadX and the circleRadius to their original values
+*/
 function restartGame() {
   if (windowResizedCounter === 0) {
     keyPressedIntializationNumber = 0;
@@ -1032,18 +1148,13 @@ function restartGame() {
     postDeathSound.stop();
 
     victoryMusic.stop();
-    
-    postDeathSoundPlayAmount = 0;
-    
-    victoryMusicPlayAmount = 0;
-    
-    escapeMusicPlayAmount = 0;
 
-    if (this.posY < height) {
-      let index = snowflakes.indexOf(this);
-      snowflakes.splice(0, 1);
+    postDeathSoundPlayAmount = 0;
+
+    victoryMusicPlayAmount = 0;
+
+    escapeMusicPlayAmount = 0;
     }
-  }
 }
 
 //Function for the time elapsed text in the top right corner
@@ -1070,7 +1181,7 @@ function timerText() {
 }
 
 /*Function for the explosion circle/ellipse
- *Variables for the ellipse include the name 'circle'
+ *Variables for the ellipse include the name "circle"
  *Same meaning and does not have an impact
  */
 function explosion() {
@@ -1085,8 +1196,8 @@ function explosion() {
 //Function for the post death sequence
 function postDeathSequence() {
   keyPressedIntializationNumber = 1;
-  
-  x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the highway from moving
+
+  x1 += scrollSpeed; //Cancel out the scroll speed, in turn, stopping the roads from moving
   x2 += scrollSpeed;
   uncomingCarX = uncomingCarX + movementScale * 4; //Cancel out the vehicle movements, stopping them from moving
   uncomingSemiX = uncomingSemiX + movementScale * 4;
@@ -1094,14 +1205,17 @@ function postDeathSequence() {
   slowCarX = slowCarX + movementScale * 1;
   circleY = height / 2;
   circleX = width / 2;
-  explosion();
+  explosion(); //Call explosion function
 
   timeElapsed--; //Cancel out the time elapsed timer
-  
+
+  //Stop escapeMusic
   escapeMusic.stop();
 
+  //Stop victoryMusic
   victoryMusic.stop();
 
+  //Start the postDeathMusic and make it only play once
   if (postDeathSoundPlayAmount === 0) {
     postDeathSound.play();
     postDeathSoundPlayAmount = 1;
@@ -1129,6 +1243,7 @@ function postDeathText() {
   text(text2Contents, text2X, text2Y, text2Width, text2Height);
 }
 
+//Function for speedIncreaseText
 function speedIncreaseText() {
   text3X = 0;
   text3Y = 0;
@@ -1146,6 +1261,7 @@ function speedIncreaseText() {
   text(text3Contents, text3X, text3Y, text3Width, text3Height);
 }
 
+//Function for windowResizedText
 function windowResizedText() {
   text4X = 0;
   text4Y = -(pixelScale * 40);
@@ -1164,6 +1280,11 @@ function windowResizedText() {
   text(text4Contents, text4X, text4Y, text4Width, text4Height);
 }
 
+/*easyMode function
+*Redefine the movement scale to its lowest setting
+*The movement scale will alter the movement speed of any element that moves
+*Recolour the text of the speed mode buttons to reflect the current speed setting
+*/
 function easyMode() {
   movementScale = windowHeight * 0.0012;
   scrollSpeed = pixelScale * 4;
@@ -1180,6 +1301,10 @@ function easyMode() {
   hardModeButton.style("color", "white");
 }
 
+/*mediumMode function
+*Set the movementScale to its medium setting
+*Restyle the speed mode buttons to fit the scenario
+*/
 function mediumMode() {
   movementScale = windowHeight * 0.0015;
   scrollSpeed = pixelScale * 5;
@@ -1196,6 +1321,10 @@ function mediumMode() {
   hardModeButton.style("color", "white");
 }
 
+/*hardMode function
+*Set the movementScale to its fastest setting
+*Restyle the speed mode buttons to fit the scenario
+*/
 function hardMode() {
   movementScale = windowHeight * 0.0018;
   scrollSpeed = pixelScale * 6;
@@ -1212,6 +1341,9 @@ function hardMode() {
   hardModeButton.style("color", "black");
 }
 
+/*Confetti class
+*Credit to slow_izzm on the p5.js web editor for this code
+*/
 class Confetti {
   constructor(_x, _y, _s) {
     this.x = _x;
@@ -1253,6 +1385,8 @@ class Confetti {
   }
 }
 
+
+//victoryText function
 function victoryText() {
   var victoryTextX = 0;
   var victoryTextY = 0;
@@ -1281,3 +1415,5 @@ function victoryText() {
     victoryTextHeight
   );
 }
+
+//This is the end of the code. Thank you for reading.
